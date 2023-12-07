@@ -6,7 +6,7 @@ function FolderHeader() {
     <S.FolderHeader>
       <form>
         <button className="link-icon">
-          <img src={linkIcon} alt="첨부 아이콘"></img>
+          <img src={linkIcon} alt="첨부 아이콘" />
         </button>
         <input placeholder="링크를 추가해 보세요." />
         <button className="link-cta">추가하기</button>

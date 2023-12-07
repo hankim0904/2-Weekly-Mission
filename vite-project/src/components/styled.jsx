@@ -608,10 +608,6 @@ export const Title = styled.div`
     letter-spacing: -0.02rem;
   }
 
-  .none {
-    display: none;
-  }
-
   div {
     display: flex;
     gap: 1.2rem;

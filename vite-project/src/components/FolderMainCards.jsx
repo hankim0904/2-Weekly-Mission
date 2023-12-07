@@ -1,28 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useAsync from "../hooks/useAsync";
-import { apiSettings, getApiInfo } from "../api";
+import { endpoints, errorMessages, getApiInfo } from "../api";
 import * as S from "./styled";
 import FolderMainCard from "./FolderMainCard";
 
 function FolderMainCards({ currentFolder }) {
   const [LinkList, setLinkList] = useState([]);
-  const [isLinkListLoading, linkListError, getLinkLIstAsync] =
+  const [isLinkListLoading, linkListError, getLinkListAsync] =
     useAsync(getApiInfo);
 
-  const loadLinkList = async () => {
-    const result = await getLinkLIstAsync(
-      apiSettings.endpoints.userLinks,
-      apiSettings.errorMessages.userLinks,
+  const loadLinkList = useCallback(async () => {
+    const result = await getLinkListAsync(
+      endpoints.userLinks,
+      errorMessages.userLinks,
       currentFolder
     );
     if (!result) return;
     const { data } = result;
     setLinkList(data);
-  };
+  }, [currentFolder, getLinkListAsync]);
 
   useEffect(() => {
     loadLinkList();
-  }, [currentFolder]);
+  }, [currentFolder, loadLinkList]);
 
   return (
     <>
@@ -40,7 +40,6 @@ function FolderMainCards({ currentFolder }) {
               rel="noreferrer"
             />
           ))}
-          ;
         </ul>
       )}
     </>

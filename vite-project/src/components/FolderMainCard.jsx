@@ -43,11 +43,11 @@ function FolderMainCard({ item, target, rel }) {
       <a href={url} target={target} rel={rel}>
         {image_source ? (
           <div className="card-img-selected">
-            <img src={image_source} alt={title}></img>
+            <img src={image_source} alt={title} />
           </div>
         ) : (
           <div className="card-img-default">
-            <img src={logo} alt="기본 이미지"></img>
+            <img src={logo} alt="기본 이미지" />
           </div>
         )}
         <div className="container">

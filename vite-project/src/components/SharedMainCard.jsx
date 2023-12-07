@@ -38,11 +38,11 @@ function SharedMainCard({ item, target, rel }) {
       <a href={url} target={target} rel={rel}>
         {imageSource ? (
           <div className="card-img-selected">
-            <img src={imageSource} alt={title}></img>
+            <img src={imageSource} alt={title} />
           </div>
         ) : (
           <div className="card-img-default">
-            <img src={logo} alt="기본 이미지"></img>
+            <img src={logo} alt="기본 이미지" />
           </div>
         )}
         <div className="container">

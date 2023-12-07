@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useAsync from "../hooks/useAsync";
-import { apiSettings, getApiInfo } from "../api";
+import { endpoints, errorMessages, getApiInfo } from "../api";
 import * as S from "./styled";
 import search from "../../../images/shared/search.svg";
 import FolderMainCards from "./FolderMainCards";
@@ -21,8 +21,8 @@ function FolderMain() {
 
   const loadFolderList = async () => {
     const result = await getFolderListAsync(
-      apiSettings.endpoints.userFolders,
-      apiSettings.errorMessages.userFolders
+      endpoints.userFolders,
+      errorMessages.userFolders
     );
     if (!result) return;
 
@@ -33,7 +33,7 @@ function FolderMain() {
 
   const handleFolderClick = (folderId, folderName) => {
     setCurrentFolder({
-      id: `?folderId=${folderId}`,
+      id: folderId,
       name: folderName,
     });
   };
@@ -46,7 +46,7 @@ function FolderMain() {
     <S.Main>
       <form className="search">
         <button className="search-img">
-          <img src={search} alt="search"></img>
+          <img src={search} alt="search" />
         </button>
         <input className="search-bar" placeholder="링크를 검색해 보세요." />
       </form>
@@ -54,12 +54,10 @@ function FolderMain() {
         <ul>
           <li
             onClick={() => {
-              handleFolderClick("", "전체");
+              handleFolderClick("", "");
             }}
           >
-            <button className={currentFolder.name === "전체" ? `focused` : ``}>
-              전체
-            </button>
+            <button className={!currentFolder.name && `focused`}>전체</button>
           </li>
           {folderList.map((item) => {
             return (
@@ -88,20 +86,22 @@ function FolderMain() {
       </S.Folder>
       <S.Title>
         <h1>{currentFolder.name}</h1>
-        <div className={currentFolder.name === "전체" ? `none` : ``}>
-          <button>
-            <img src={shareIcon} alt="공유 아이콘" />
-            <span>공유</span>
-          </button>
-          <button>
-            <img src={penIcon} alt="이름변경 아이콘" />
-            <span>이름 변경</span>
-          </button>
-          <button>
-            <img src={binIcon} alt="삭제 아이콘" />
-            <span>삭제</span>
-          </button>
-        </div>
+        {currentFolder.id && (
+          <div>
+            <button>
+              <img src={shareIcon} alt="공유 아이콘" />
+              <span>공유</span>
+            </button>
+            <button>
+              <img src={penIcon} alt="이름변경 아이콘" />
+              <span>이름 변경</span>
+            </button>
+            <button>
+              <img src={binIcon} alt="삭제 아이콘" />
+              <span>삭제</span>
+            </button>
+          </div>
+        )}
       </S.Title>
       <FolderMainCards currentFolder={currentFolder.id} />
     </S.Main>

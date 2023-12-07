@@ -2,7 +2,7 @@ import * as S from "./styled";
 import logo from "../../../images/landing/logo.svg";
 import { useEffect, useState } from "react";
 import useAsync from "../hooks/useAsync";
-import { apiSettings, getApiInfo } from "../api";
+import { endpoints, errorMessages, getApiInfo } from "../api";
 import { useLocation } from "react-router-dom";
 
 function Navigation() {
@@ -13,10 +13,7 @@ function Navigation() {
     useAsync(getApiInfo);
 
   const loadProfile = async () => {
-    const result = await getProfileAsync(
-      apiSettings.endpoints.user,
-      apiSettings.errorMessages.user
-    );
+    const result = await getProfileAsync(endpoints.user, errorMessages.user);
     if (!result) return;
     const { data } = result;
     const { image_source, email } = data[0];
