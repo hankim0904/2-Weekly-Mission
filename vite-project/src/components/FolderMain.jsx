@@ -9,6 +9,10 @@ import addWhiteIcon from "../../../images/folder/add_white.svg";
 import shareIcon from "../../../images/folder/share.svg";
 import penIcon from "../../../images/folder/pen.svg";
 import binIcon from "../../../images/folder/bin.svg";
+import Modal from "./common/Modal";
+import Input from "./common/Input";
+import Button from "./common/Button";
+import ShareLink from "./common/ShareLink";
 
 function FolderMain() {
   const [folderList, setFolderList] = useState([]);
@@ -42,6 +46,32 @@ function FolderMain() {
     loadFolderList();
   }, [currentFolder]);
 
+  const [isAddModalOpen, setIsModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
+
+  const handleAddModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleShareModal = () => {
+    setIsShareModalOpen(true);
+  };
+  const handleEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+  const handleRemoveModal = () => {
+    setIsRemoveModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsShareModalOpen(false);
+    setIsEditModalOpen(false);
+    setIsRemoveModalOpen(false);
+    setIsModalOpen(false);
+  };
+
   return (
     <S.Main>
       <form className="search">
@@ -57,7 +87,9 @@ function FolderMain() {
               handleFolderClick("", "");
             }}
           >
-            <button className={!currentFolder.name && `focused`}>전체</button>
+            <button className={!currentFolder.name ? `focused` : undefined}>
+              전체
+            </button>
           </li>
           {folderList.map((item) => {
             return (
@@ -76,7 +108,7 @@ function FolderMain() {
             );
           })}
         </ul>
-        <button className="add">
+        <button className="add" onClick={handleAddModal}>
           <img src={addIcon} alt="폴더 추가 아이콘" />
         </button>
         <button className="add-mobile">
@@ -88,22 +120,73 @@ function FolderMain() {
         <h1>{currentFolder.name}</h1>
         {currentFolder.id && (
           <div>
-            <button>
+            <button onClick={handleShareModal}>
               <img src={shareIcon} alt="공유 아이콘" />
               <span>공유</span>
             </button>
-            <button>
+            <button onClick={handleEditModal}>
               <img src={penIcon} alt="이름변경 아이콘" />
               <span>이름 변경</span>
             </button>
-            <button>
+            <button onClick={handleRemoveModal}>
               <img src={binIcon} alt="삭제 아이콘" />
               <span>삭제</span>
             </button>
           </div>
         )}
       </S.Title>
-      <FolderMainCards currentFolder={currentFolder.id} />
+      <FolderMainCards
+        currentFolder={currentFolder.id}
+        folderList={folderList}
+      />
+
+      {isAddModalOpen && (
+        <Modal modalTitle="폴더 추가" onClose={handleCloseModal}>
+          <div className="modal-content">
+            <Input placeholder="내용 입력" />
+            <Button variant="default" size="lg">
+              추가하기
+            </Button>
+          </div>
+        </Modal>
+      )}
+
+      {isShareModalOpen && (
+        <Modal
+          modalTitle="폴더 공유"
+          subTitle={currentFolder.name}
+          onClose={handleCloseModal}
+        >
+          <div className="modal-content">
+            <ShareLink currentFolder={currentFolder.id} />
+          </div>
+        </Modal>
+      )}
+
+      {isEditModalOpen && (
+        <Modal modalTitle="폴더 이름 변경" onClose={handleCloseModal}>
+          <div className="modal-content">
+            <Input placeholder="내용 입력" />
+            <Button variant="default" size="lg">
+              변경하기
+            </Button>
+          </div>
+        </Modal>
+      )}
+
+      {isRemoveModalOpen && (
+        <Modal
+          modalTitle="폴더 삭제"
+          subTitle={currentFolder.name}
+          onClose={handleCloseModal}
+        >
+          <div className="modal-content">
+            <Button variant="remove" size="lg">
+              삭제하기
+            </Button>
+          </div>
+        </Modal>
+      )}
     </S.Main>
   );
 }

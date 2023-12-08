@@ -4,7 +4,7 @@ import { endpoints, errorMessages, getApiInfo } from "../api";
 import * as S from "./styled";
 import FolderMainCard from "./FolderMainCard";
 
-function FolderMainCards({ currentFolder }) {
+function FolderMainCards({ currentFolder, folderList }) {
   const [LinkList, setLinkList] = useState([]);
   const [isLinkListLoading, linkListError, getLinkListAsync] =
     useAsync(getApiInfo);
@@ -38,6 +38,7 @@ function FolderMainCards({ currentFolder }) {
               item={item}
               target="_blank"
               rel="noreferrer"
+              folderList={folderList}
             />
           ))}
         </ul>

@@ -310,10 +310,10 @@ export const SharedMain = styled.main`
     height: 33.4rem;
     border-radius: 1.5rem;
     box-shadow: 0 0.5rem 2.5rem 0 rgba(0, 0, 0, 0.08);
-    overflow: hidden;
   }
 
   .card-img-selected {
+    border-radius: 15px 15px 0 0;
     overflow: hidden;
     height: 20rem;
   }
@@ -329,11 +329,13 @@ export const SharedMain = styled.main`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: all ease-in-out 0.3s;
   }
 
   .card-img-default img {
     opacity: 0.2;
     flex-shrink: 0;
+    transition: all ease-in-out 0.3s;
   }
 
   .card:hover .card-img-selected img,
