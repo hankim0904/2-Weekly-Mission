@@ -1,42 +1,47 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import styled from "styled-components";
+
+import Modal from "./common/Modal";
+import FolderList from "./common/FolderList";
+import Button from "./common/Button";
+
+import { formatDate, countAgo } from "../utils/getDateInfo";
+
 import logo from "../../../images/landing/logo.svg";
 import star from "../../../images/folder/star.svg";
 import kebab from "../../../images/folder/kebab.svg";
-import "./FolderMainCard.css";
-import Modal from "./common/Modal";
-import FolderList from "./common/FolderList";
-import Input from "./common/Input";
-import Button from "./common/Button";
 
-function formatDate(value) {
-  const date = new Date(value);
-  return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}`;
-}
+const StyledFolderMainCard = styled.li`
+  .kebab-menu {
+    position: absolute;
+    z-index: 2;
 
-function countAgo(value) {
-  const date = new Date(value);
-  const today = new Date();
-
-  const timeDiff = today.getTime() - date.getTime();
-
-  const minute = timeDiff / 1000 / 60;
-  const hour = timeDiff / 1000 / 60 / 60;
-  const day = timeDiff / 1000 / 60 / 60 / 24;
-  const month = timeDiff / 1000 / 60 / 60 / 24 / 30;
-  const year = timeDiff / 1000 / 60 / 60 / 24 / 30 / 12;
-
-  if (year >= 1) {
-    return year < 2 ? "1 year ago" : `${Math.floor(year)} years ago`;
-  } else if (month >= 1) {
-    return month < 2 ? "1 month ago" : `${Math.floor(month)} months ago`;
-  } else if (day >= 1) {
-    return day < 2 ? "1 day ago" : `${Math.floor(day)} days ago`;
-  } else if (hour >= 1) {
-    return hour < 2 ? "1 hour ago" : `${Math.floor(hour)} hours ago`;
-  } else {
-    return minute < 2 ? "1 minute ago" : `${Math.floor(minute)} minutes ago`;
+    list-style: none;
+    box-shadow: 0px 2px 8px 0px rgba(51, 50, 54, 0.1);
   }
-}
+
+  .hide {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .kebab-menu button {
+    display: block;
+    width: 100px;
+    padding: 7px 0;
+    font-size: 14px;
+    font-weight: 400;
+    background-color: #fff;
+    border: none;
+    outline: none;
+  }
+
+  .kebab-menu li:hover button {
+    color: var(--primary);
+    background-color: #e7effb;
+  }
+`;
 
 function FolderMainCard({ item, target, rel, folderList }) {
   const { created_at, url, title, description, image_source } = item;
@@ -47,10 +52,6 @@ function FolderMainCard({ item, target, rel, folderList }) {
   const handleToggleMenu = (e) => {
     e.stopPropagation();
     setIsSelectMenuOpen((prev) => !prev);
-  };
-
-  const handleSelectClose = () => {
-    setIsSelectMenuOpen(false);
   };
 
   const handleRemoveModal = () => {
@@ -67,22 +68,26 @@ function FolderMainCard({ item, target, rel, folderList }) {
   };
 
   return (
-    <li className="card" onClick={() => setIsSelectMenuOpen(false)}>
+    <StyledFolderMainCard
+      className="card"
+      onClick={() => setIsSelectMenuOpen(false)}
+    >
       <button className="star-button">
         <img src={star} alt="별모양 버튼" />
       </button>
 
-      {image_source ? (
-        <a href={url} target={target} rel={rel}>
+      <a href={url} target={target} rel={rel}>
+        {image_source ? (
           <div className="card-img-selected">
             <img src={image_source} alt={title} />
           </div>
-        </a>
-      ) : (
-        <div className="card-img-default">
-          <img src={logo} alt="기본 이미지" />
-        </div>
-      )}
+        ) : (
+          <div className="card-img-default">
+            <img src={logo} alt="기본 이미지" />
+          </div>
+        )}
+      </a>
+
       <div className="container">
         <div className="bundle">
           <span className="card-ago">{countAgo(created_at)}</span>
@@ -131,7 +136,7 @@ function FolderMainCard({ item, target, rel, folderList }) {
           </div>
         </Modal>
       )}
-    </li>
+    </StyledFolderMainCard>
   );
 }
 

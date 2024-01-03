@@ -1,12 +1,37 @@
 import { useEffect, useState, useCallback } from "react";
 import useAsync from "../hooks/useAsync";
-import { endpoints, errorMessages, getApiInfo } from "../api";
-import * as S from "./styled";
+import { endpoints, errorMessages, getApiInfo } from "../api/api";
+import styled from "styled-components";
 import FolderMainCard from "./FolderMainCard";
+
+const StyledNolink = styled.div`
+  width: 106rem;
+  padding: 4.1rem 0 3.5rem;
+  margin-top: 1.6rem;
+
+  p {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 2.4rem;
+  }
+
+  @media (max-width: 1124px) {
+    width: 70.4rem;
+  }
+
+  @media (max-width: 767px) {
+    width: 32.5rem;
+
+    p {
+      font-size: 1.4rem;
+    }
+  }
+`;
 
 function FolderMainCards({ currentFolder, folderList }) {
   const [LinkList, setLinkList] = useState([]);
-  const [isLinkListLoading, linkListError, getLinkListAsync] =
+  const [isLinkListLoading, isLinkListError, getLinkListAsync] =
     useAsync(getApiInfo);
 
   const loadLinkList = useCallback(async () => {
@@ -27,9 +52,9 @@ function FolderMainCards({ currentFolder, folderList }) {
   return (
     <>
       {LinkList.length === 0 ? (
-        <S.Nolink>
+        <StyledNolink>
           <p>저장된 링크가 없습니다</p>
-        </S.Nolink>
+        </StyledNolink>
       ) : (
         <ul className="cards">
           {LinkList.map((item) => (

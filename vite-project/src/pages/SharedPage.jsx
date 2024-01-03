@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { endpoints, errorMessages, getApiInfo } from "../api";
+import { endpoints, errorMessages, getApiInfo } from "../api/api";
 import SharedHeader from "../components/SharedHeader";
 import SharedMain from "../components/SharedMain";
 import useAsync from "../hooks/useAsync";

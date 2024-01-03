@@ -1,7 +1,55 @@
 import { useEffect } from "react";
 import Overlay from "./Overlay";
-import "./modal.css";
-import closeIcon from "./images/close.svg";
+import styled from "styled-components";
+import closeIcon from "../../assets/close.svg";
+
+const StyledModal = styled.div`
+  position: relative;
+  padding: 32px 40px;
+  border: 1px solid #ccd5e3;
+  border-radius: 15px;
+  background-color: var(--white);
+`;
+
+const Header = styled.header`
+  text-align: center;
+  margin-bottom: 24px;
+`;
+
+const ModalTitle = styled.h1`
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gray100);
+`;
+
+const CloseButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  background-color: var(--gray10);
+  position: absolute;
+  top: 15px;
+  right: 15px;
+`;
+
+const SubTitle = styled.p`
+  color: var(--gray60, #9fa6b2);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  margin-top: 8px;
+`;
+
+const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
 
 const Modal = ({ onClose, modalTitle, subTitle, children }) => {
   useEffect(() => {
@@ -19,16 +67,16 @@ const Modal = ({ onClose, modalTitle, subTitle, children }) => {
 
   return (
     <Overlay>
-      <div className="modal">
-        <button className="modal-btn-close" onClick={onClose}>
+      <StyledModal>
+        <CloseButton className="modal-btn-close" onClick={onClose}>
           <img src={closeIcon} alt="모달 닫기 버튼" />
-        </button>
-        <header className="modal-header">
-          <h1 className="modal-header-title">{modalTitle}</h1>
-          <p className="modal-header-sub-title">{subTitle}</p>
-        </header>
-        {children}
-      </div>
+        </CloseButton>
+        <Header className="modal-header">
+          <ModalTitle>{modalTitle}</ModalTitle>
+          <SubTitle>{subTitle}</SubTitle>
+        </Header>
+        <ModalContent className="modal-content">{children}</ModalContent>
+      </StyledModal>
     </Overlay>
   );
 };

@@ -1,6 +1,6 @@
 import SharedMainCard from "./SharedMainCard";
 import search from "../../../images/shared/search.svg";
-import * as S from "./styled";
+import * as S from "../styles/Main";
 
 const MainSearchBox = ({ className }) => (
   <form className={className}>

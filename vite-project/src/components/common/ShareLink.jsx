@@ -1,13 +1,37 @@
-import kakaoIcon from "./images/kakao.svg";
-import facebookIcon from "./images/facebook.svg";
-import linkcopyIcon from "./images/linkcopy.svg";
+import styled from "styled-components";
+import kakaoIcon from "../../assets/kakao.svg";
+import facebookIcon from "../../assets/facebook.svg";
+import linkcopyIcon from "../../assets/linkcopy.svg";
 
-import "./shareLink.css";
+const ShareList = styled.ul`
+  display: flex;
+  gap: 32px;
+  list-style: none;
+`;
 
-function ShareLink({ currentFolder }) {
-  const userId = 1;
-  console.log(currentFolder);
-  const currentURL = `http://localhost3000/shared?user=${userId}&folder=${currentFolder}`;
+const ShareListItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const ShareIcon = styled.img`
+  width: 42px;
+  height: 42px;
+  background-color: rgba(157, 157, 157, 0.04);
+`;
+
+const ShareText = styled.p`
+  font-size: 13px;
+  color: var(--gray100);
+  margin-top: 10px;
+  white-space: nowrap;
+`;
+
+function ShareLink() {
+  const currentURL = window.location.href;
 
   const clipboard = () => {
     const result = navigator.clipboard.writeText(currentURL);
@@ -16,20 +40,20 @@ function ShareLink({ currentFolder }) {
   };
 
   return (
-    <ul className="share-list">
-      <li className="share-list-item" onClick={clipboard}>
-        <img src={kakaoIcon} alt="카카오톡 링크 이미지" />
-        <p>카카오톡</p>
-      </li>
-      <li className="share-list-item" onClick={clipboard}>
-        <img src={facebookIcon} alt="카카오톡 링크 이미지" />
-        <p>페이스북</p>
-      </li>
-      <li className="share-list-item" onClick={clipboard}>
-        <img src={linkcopyIcon} alt="카카오톡 링크 이미지" />
-        <p>링크복사</p>
-      </li>
-    </ul>
+    <ShareList>
+      <ShareListItem onClick={shareKakao}>
+        <ShareIcon src={kakaoIcon} alt="카카오톡 링크 이미지" />
+        <ShareText>카카오톡</ShareText>
+      </ShareListItem>
+      <ShareListItem onClick={clipboard}>
+        <ShareIcon src={facebookIcon} alt="페이스북 링크 이미지" />
+        <ShareText>페이스북</ShareText>
+      </ShareListItem>
+      <ShareListItem onClick={clipboard}>
+        <ShareIcon src={linkcopyIcon} alt="링크복사 링크 이미지" />
+        <ShareText>링크복사</ShareText>
+      </ShareListItem>
+    </ShareList>
   );
 }
 

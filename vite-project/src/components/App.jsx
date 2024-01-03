@@ -1,7 +1,7 @@
-import * as S from "./styled";
+import * as S from "../styles/global";
 import { Outlet } from "react-router-dom";
-import Navigation from "./Navigation";
-import Footer from "./Footer";
+import Navigation from "../components/common/Navigation";
+import Footer from "../components/common/Footer";
 
 function App() {
   return (

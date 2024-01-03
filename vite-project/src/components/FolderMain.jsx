@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import useAsync from "../hooks/useAsync";
-import { endpoints, errorMessages, getApiInfo } from "../api";
-import * as S from "./styled";
+import { useState } from "react";
+
+import * as S from "../styles/Main";
 import search from "../../../images/shared/search.svg";
 import FolderMainCards from "./FolderMainCards";
 import addIcon from "../../../images/folder/add.svg";
@@ -14,26 +13,11 @@ import Input from "./common/Input";
 import Button from "./common/Button";
 import ShareLink from "./common/ShareLink";
 
-function FolderMain() {
-  const [folderList, setFolderList] = useState([]);
-  const [currentFolder, setCurrentFolder] = useState({
-    id: "",
-    name: "전체",
-  });
-  const [isfolderListLoading, folderListError, getFolderListAsync] =
-    useAsync(getApiInfo);
-
-  const loadFolderList = async () => {
-    const result = await getFolderListAsync(
-      endpoints.userFolders,
-      errorMessages.userFolders
-    );
-    if (!result) return;
-
-    const { data } = result;
-
-    setFolderList(data);
-  };
+function FolderMain({ folderList, currentFolder, setCurrentFolder }) {
+  const [isAddModalOpen, setIsModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
 
   const handleFolderClick = (folderId, folderName) => {
     setCurrentFolder({
@@ -41,15 +25,6 @@ function FolderMain() {
       name: folderName,
     });
   };
-
-  useEffect(() => {
-    loadFolderList();
-  }, [currentFolder]);
-
-  const [isAddModalOpen, setIsModalOpen] = useState(false);
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
 
   const handleAddModal = () => {
     setIsModalOpen(true);
@@ -111,7 +86,7 @@ function FolderMain() {
         <button className="add" onClick={handleAddModal}>
           <img src={addIcon} alt="폴더 추가 아이콘" />
         </button>
-        <button className="add-mobile">
+        <button className="add-mobile" onClick={handleAddModal}>
           폴더 추가
           <img src={addWhiteIcon} alt="폴더 추가 아이콘 흰색" />
         </button>
@@ -158,7 +133,7 @@ function FolderMain() {
           onClose={handleCloseModal}
         >
           <div className="modal-content">
-            <ShareLink currentFolder={currentFolder.id} />
+            <ShareLink />
           </div>
         </Modal>
       )}
