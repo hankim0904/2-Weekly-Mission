@@ -41,11 +41,11 @@ function ShareLink() {
 
   return (
     <ShareList>
-      <ShareListItem onClick={shareKakao}>
+      <ShareListItem>
         <ShareIcon src={kakaoIcon} alt="카카오톡 링크 이미지" />
         <ShareText>카카오톡</ShareText>
       </ShareListItem>
-      <ShareListItem onClick={clipboard}>
+      <ShareListItem>
         <ShareIcon src={facebookIcon} alt="페이스북 링크 이미지" />
         <ShareText>페이스북</ShareText>
       </ShareListItem>

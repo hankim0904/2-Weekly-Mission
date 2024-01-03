@@ -92,7 +92,7 @@ function FolderMain({ folderList, currentFolder, setCurrentFolder }) {
         </button>
       </S.Folder>
       <S.Title>
-        <h1>{currentFolder.name}</h1>
+        {currentFolder.name ? <h1>{currentFolder.name}</h1> : <h1>전체</h1>}
         {currentFolder.id && (
           <div>
             <button onClick={handleShareModal}>

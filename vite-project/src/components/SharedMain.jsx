@@ -16,7 +16,7 @@ function SharedMain({ links }) {
     <S.SharedMain>
       <MainSearchBox className="search" />{" "}
       <ul className="cards">
-        {links.map((item) => {
+        {links?.map((item) => {
           return (
             <SharedMainCard
               key={item.id}

@@ -7,6 +7,7 @@ export const endpoints = {
   userFolders: "/api/users/1/folders",
   userLinks: "/api/users/1/links",
 };
+
 export const errorMessages = {
   profile: "유저 정보를 불러오는데 실패했습니다.",
   folder: "폴더를 불러오는데 실패했습니다.",

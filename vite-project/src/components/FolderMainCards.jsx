@@ -30,34 +30,33 @@ const StyledNolink = styled.div`
 `;
 
 function FolderMainCards({ currentFolder, folderList }) {
-  const [LinkList, setLinkList] = useState([]);
-  const [isLinkListLoading, isLinkListError, getLinkListAsync] =
-    useAsync(getApiInfo);
-
-  const loadLinkList = useCallback(async () => {
-    const result = await getLinkListAsync(
-      endpoints.userLinks,
-      errorMessages.userLinks,
-      currentFolder
-    );
-    if (!result) return;
-    const { data } = result;
-    setLinkList(data);
-  }, [currentFolder, getLinkListAsync]);
+  const [linkList, setLinkList] = useState([]);
+  const getLinkList = useCallback(
+    () =>
+      getApiInfo(endpoints.userLinks, errorMessages.userLinks, currentFolder),
+    [currentFolder]
+  );
+  const { data: LinkListResponse, execute: fetchLinkList } =
+    useAsync(getLinkList);
 
   useEffect(() => {
-    loadLinkList();
-  }, [currentFolder, loadLinkList]);
+    fetchLinkList();
+  }, [fetchLinkList]);
+
+  useEffect(() => {
+    const LinkListData = LinkListResponse?.data || [];
+    setLinkList(LinkListData);
+  }, [LinkListResponse]);
 
   return (
     <>
-      {LinkList.length === 0 ? (
+      {linkList.length === 0 ? (
         <StyledNolink>
           <p>저장된 링크가 없습니다</p>
         </StyledNolink>
       ) : (
         <ul className="cards">
-          {LinkList.map((item) => (
+          {linkList.map((item) => (
             <FolderMainCard
               key={item.id}
               item={item}

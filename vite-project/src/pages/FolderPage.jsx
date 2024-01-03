@@ -1,45 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from 'react';
 
-import useAsync from "../hooks/useAsync";
-import { endpoints, errorMessages, getApiInfo } from "../api/api";
+import useAsync from '../hooks/useAsync';
+import { endpoints, errorMessages, getApiInfo } from '../api/api';
 
-import FolderHeader from "../components/FolderHeader";
-import FolderMain from "../components/FolderMain";
+import FolderHeader from '../components/FolderHeader';
+import FolderMain from '../components/FolderMain';
+import Layout from '../components/common/Layout';
 
 function FolderPage() {
-  const [folderList, setFolderList] = useState([]);
   const [currentFolder, setCurrentFolder] = useState({
-    id: "",
-    name: "전체",
+    id: '',
+    name: '전체',
   });
-  const [isfolderListLoading, folderListError, getFolderListAsync] =
-    useAsync(getApiInfo);
-
-  const loadFolderList = async () => {
-    const result = await getFolderListAsync(
-      endpoints.userFolders,
-      errorMessages.userFolders
-    );
-    if (!result) return;
-
-    const { data } = result;
-
-    setFolderList(data);
-  };
-
-  useEffect(() => {
-    loadFolderList();
-  }, [currentFolder]);
-
+  const getFolderList = () =>
+    getApiInfo(endpoints.userFolders, errorMessages.userFolders);
+  const { data: folderListResponse } = useAsync(getFolderList);
+  const folderListData = folderListResponse?.data || [];
   return (
-    <>
-      <FolderHeader folderList={folderList} />
+    <Layout isSticky={false}>
+      <FolderHeader folderList={folderListData} />
       <FolderMain
-        folderList={folderList}
+        folderList={folderListData}
         currentFolder={currentFolder}
         setCurrentFolder={setCurrentFolder}
       />
-    </>
+    </Layout>
   );
 }
 

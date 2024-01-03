@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { endpoints, errorMessages, getApiInfo } from "../../api/api";
-import useAsync from "../../hooks/useAsync";
-import styled from "styled-components";
-import logo from "../../../../images/landing/logo.svg";
+import { useEffect, useState } from 'react';
+import { endpoints, errorMessages, getApiInfo } from '../../api/api';
+import useAsync from '../../hooks/useAsync';
+import styled from 'styled-components';
+import logo from '../../../../images/landing/logo.svg';
 
 const flex = `
   display: flex;
@@ -13,7 +12,7 @@ const flex = `
 
 const Nav = styled.nav`
   background: var(--background);
-  position: ${({ $isFolderPage }) => ($isFolderPage ? `static` : `sticky`)};
+  position: ${({ $isSticky }) => ($isSticky ? `sticky` : `static`)};
   top: 0;
   z-index: 1;
   ${flex}
@@ -97,27 +96,20 @@ const Nav = styled.nav`
   }
 `;
 
-function Navigation() {
-  const location = useLocation();
-  const isFolderPage = location.pathname === "/folder";
-  const [profile, setProfile] = useState({});
-  const [isProfileLoading, isProfileError, getProfileAsync] =
-    useAsync(getApiInfo);
+function Navigation({ isSticky }) {
+  const [profile, setProfile] = useState(null);
 
-  const loadProfile = async () => {
-    const result = await getProfileAsync(endpoints.user, errorMessages.user);
-    if (!result) return;
-    const { data } = result;
-    const { image_source, email } = data[0];
-    setProfile({ image_source, email });
-  };
+  const getUser = () => getApiInfo(endpoints.user, errorMessages.user);
+  const { data: profileResponse } = useAsync(getUser);
+  const profileData = profileResponse?.data || [];
+  const { image_source, email } = profileData[0] || {};
 
   useEffect(() => {
-    loadProfile();
-  }, []);
+    setProfile(profileData[0] ? { image_source, email } : null);
+  }, [profileData, email, image_source]);
 
   return (
-    <Nav $isFolderPage={isFolderPage}>
+    <Nav $isSticky={isSticky}>
       <div className="gnb">
         <a href="/">
           <img className="cta logo" src={logo} alt="로고" />
@@ -132,11 +124,9 @@ function Navigation() {
             <span className="profile-email">{profile.email}</span>
           </div>
         ) : (
-          <a href="../../../signin/index.html">
-            <button className="cta login" type="button">
-              로그인
-            </button>
-          </a>
+          <button className="cta login" type="button">
+            로그인
+          </button>
         )}
       </div>
     </Nav>
