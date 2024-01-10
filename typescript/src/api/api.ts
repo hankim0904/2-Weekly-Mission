@@ -11,6 +11,13 @@ export async function getApiInfo(
   if (!response.ok) {
     throw new Error(errorMessage);
   }
-  const body = await response.json();
+
+  let body;
+  try {
+    body = await response.json();
+  } catch (error) {
+    throw new Error(`Error parsing JSON: ${(error as Error).message}`);
+  }
+
   return body;
 }
