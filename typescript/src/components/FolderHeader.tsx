@@ -5,6 +5,8 @@ import Button from './common/Button';
 import Modal from './common/Modal';
 import linkIcon from '../../../images/folder/link.svg';
 
+import { Folder } from '../types/FolderType';
+
 const flex = `
   display: flex;
   justify-content: center;
@@ -92,17 +94,8 @@ const StyledFolderHeader = styled.header`
   }
 `;
 
-interface FolderData {
-  created_at: string;
-  favorite: boolean;
-  id: number;
-  link: { count: number };
-  name: string;
-  user_id: number;
-}
-
 interface FolderListProps {
-  folderList: FolderData[];
+  folderList: Folder[];
 }
 
 function FolderHeader({ folderList }: FolderListProps) {

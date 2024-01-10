@@ -1,15 +1,7 @@
 import SharedMainCard from './SharedMainCard';
 import search from '../../../images/shared/search.svg';
 import * as S from '../styles/Main';
-
-interface LinkData {
-  id: number;
-  createdAt: string;
-  url: string;
-  title: string;
-  description: string;
-  imageSource?: string;
-}
+import { Link } from '../types/SharedType';
 
 const MainSearchBox = ({ className }: { className: string }) => (
   <form className={className}>
@@ -20,12 +12,12 @@ const MainSearchBox = ({ className }: { className: string }) => (
   </form>
 );
 
-function SharedMain({ links }: { links: LinkData[] }) {
+function SharedMain({ links }: { links: Link[] }) {
   return (
     <S.SharedMain>
       <MainSearchBox className="search" />{' '}
       <ul className="cards">
-        {links?.map((item) => {
+        {links.map((item) => {
           return (
             <SharedMainCard
               key={item.id}

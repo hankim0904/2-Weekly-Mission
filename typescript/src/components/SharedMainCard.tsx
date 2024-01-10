@@ -1,17 +1,9 @@
 import { formatDate, countAgo } from '../utils/getDateInfo';
 import logo from '../../../images/landing/logo.svg';
-
-interface LinkData {
-  id: number;
-  createdAt: string;
-  url: string;
-  title: string;
-  description: string;
-  imageSource?: string;
-}
+import { Link } from '../types/SharedType';
 
 interface SharedMainCardProps {
-  link: LinkData;
+  link: Link;
   target: string;
   rel: string;
 }

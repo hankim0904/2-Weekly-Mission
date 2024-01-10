@@ -6,28 +6,7 @@ import SharedHeader from '../components/SharedHeader';
 import SharedMain from '../components/SharedMain';
 import Layout from '../components/common/Layout';
 
-interface FolderOwner {
-  id: number;
-  name: string;
-  profileImageSource: string;
-}
-
-interface LinkData {
-  id: number;
-  createdAt: string;
-  url: string;
-  title: string;
-  description: string;
-  imageSource?: string;
-}
-
-interface Folder {
-  id: number;
-  name: string;
-  owner: FolderOwner;
-  links: LinkData[];
-  count: number;
-}
+import { Link, Folder } from '../types/SharedType';
 
 interface FolderApiResponse {
   folder: Folder;
@@ -40,7 +19,7 @@ function SharedPage() {
     isLoading: isFolderLoading,
     apiData: { folder: folderData },
   } = useAsync(getFolder);
-  const { links }: { links: LinkData[] } = folderData || {};
+  const { links }: { links: Link[] } = folderData || { links: [] };
 
   return (
     <Layout>

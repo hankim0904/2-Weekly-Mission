@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Folder } from '../types/SharedType';
 
 const flex = `
   display: flex;
@@ -62,28 +63,6 @@ const StyledSharedHeader = styled.header`
   }
 `;
 
-interface FolderOwner {
-  id: number;
-  name: string;
-  profileImageSource: string;
-}
-
-interface LinkData {
-  id: number;
-  createdAt: string;
-  url: string;
-  title: string;
-  description: string;
-  imageSource?: string;
-}
-
-interface Folder {
-  id: number;
-  name: string;
-  owner: FolderOwner;
-  links: LinkData[];
-  count: number;
-}
 function SharedHeader({ folder }: { folder: Folder }) {
   const {
     name,

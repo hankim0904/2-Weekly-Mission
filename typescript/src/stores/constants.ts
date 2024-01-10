@@ -28,7 +28,7 @@ export const SOCIAL_LIST = [
     icon: instagramIcon,
     link: 'https://www.instagram.com/',
   },
-];
+] as const;
 
 export const ENDPOINT = {
   profile: '/api/sample/user',
@@ -36,7 +36,7 @@ export const ENDPOINT = {
   user: '/api/users/1',
   userFolders: '/api/users/1/folders',
   userLinks: '/api/users/1/links',
-};
+} as const;
 
 export const ERROR_MESSAGE = {
   profile: '유저 정보를 불러오는데 실패했습니다.',
@@ -44,4 +44,4 @@ export const ERROR_MESSAGE = {
   user: '유저 정보를 불러오는데 실패했습니다.',
   userFolders: '유저 폴더를 불러오는데 실패했습니다.',
   userLinks: '유저 링크를 불러오는데 실패했습니다.',
-};
+} as const;

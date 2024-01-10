@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Folder } from '../../types/FolderType';
 
 const AddFolderList = styled.ul`
   display: flex;
@@ -38,17 +39,8 @@ const LinkCount = styled.span`
   margin-left: 8px;
 `;
 
-interface FolderData {
-  created_at: string;
-  favorite: boolean;
-  id: number;
-  link: { count: number };
-  name: string;
-  user_id: number;
-}
-
 interface FolderListProps {
-  folderList: FolderData[];
+  folderList: Folder[];
 }
 
 const FolderList = ({ folderList }: FolderListProps) => {

@@ -7,6 +7,8 @@ import { ENDPOINT, ERROR_MESSAGE } from '../stores/constants';
 import styled from 'styled-components';
 import FolderMainCard from './FolderMainCard';
 
+import { Folder, Link } from '../types/FolderType';
+
 const StyledNolink = styled.div`
   width: 106rem;
   padding: 4.1rem 0 3.5rem;
@@ -32,33 +34,13 @@ const StyledNolink = styled.div`
   }
 `;
 
-interface FolderData {
-  created_at: string;
-  favorite: boolean;
-  id: number;
-  link: { count: number };
-  name: string;
-  user_id: number;
-}
-
 interface FolderMainCardsProps {
   currentFolder: number;
-  folderList: FolderData[];
-}
-
-interface LinkData {
-  id: number;
-  created_at: string;
-  updated_at: string | null;
-  url: string;
-  title: string | null;
-  description: string | null;
-  image_source: string | null;
-  folder_id: number | null;
+  folderList: Folder[];
 }
 
 interface LinkDataApiResponse {
-  data: LinkData[];
+  data: Link[];
 }
 
 function FolderMainCards({ currentFolder, folderList }: FolderMainCardsProps) {

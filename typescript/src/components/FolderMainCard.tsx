@@ -1,9 +1,12 @@
 import { MouseEvent, useState } from 'react';
 import styled from 'styled-components';
+import classNames from 'classnames';
 
 import Modal from './common/Modal';
 import FolderList from './common/FolderList';
 import Button from './common/Button';
+
+import { Folder, Link } from '../types/FolderType';
 
 import { formatDate, countAgo } from '../utils/getDateInfo';
 
@@ -43,31 +46,11 @@ const StyledFolderMainCard = styled.li`
   }
 `;
 
-interface LinkData {
-  id: number;
-  created_at: string;
-  updated_at: string | null;
-  url: string;
-  title: string | null;
-  description: string | null;
-  image_source: string | null;
-  folder_id: number | null;
-}
-
-interface FolderData {
-  created_at: string;
-  favorite: boolean;
-  id: number;
-  link: { count: number };
-  name: string;
-  user_id: number;
-}
-
 interface FolderMainCardProps {
-  linkData: LinkData;
+  linkData: Link;
   target: string;
   rel: string;
-  folderList: FolderData[];
+  folderList: Folder[];
 }
 
 function FolderMainCard({
@@ -129,7 +112,11 @@ function FolderMainCard({
             </button>
 
             {isSelectMenuOpen && (
-              <ul className={`kebab-menu ${isSelectMenuOpen ? '' : 'hide'}`}>
+              <ul
+                className={classNames('kebab-menu', {
+                  hide: !isSelectMenuOpen,
+                })}
+              >
                 <li>
                   <button onClick={handleRemoveModal}>삭제하기</button>
                 </li>

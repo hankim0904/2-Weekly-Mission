@@ -8,22 +8,10 @@ import FolderHeader from '../components/FolderHeader';
 import FolderMain from '../components/FolderMain';
 import Layout from '../components/common/Layout';
 
-interface CurrentFolder {
-  id: number;
-  name: string;
-}
+import { CurrentFolder, Folder } from '../types/FolderType';
 
-interface FolderData {
-  created_at: string;
-  favorite: boolean;
-  id: number;
-  link: { count: number };
-  name: string;
-  user_id: number;
-}
-
-interface FolderDataApiResponse {
-  data: FolderData[];
+interface FolderApiResponse {
+  data: Folder[];
 }
 
 function FolderPage() {
@@ -31,7 +19,7 @@ function FolderPage() {
     id: 0,
     name: '',
   });
-  const getFolderList = (): Promise<FolderDataApiResponse> =>
+  const getFolderList = (): Promise<FolderApiResponse> =>
     getApiInfo(ENDPOINT.userFolders, ERROR_MESSAGE.userFolders);
 
   const {

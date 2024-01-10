@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import * as S from '../styles/Main';
+import classNames from 'classnames';
+
 import search from '../../../images/shared/search.svg';
 import FolderMainCards from './FolderMainCards';
 import addIcon from '../../../images/folder/add.svg';
@@ -13,22 +15,10 @@ import Input from './common/Input';
 import Button from './common/Button';
 import ShareLink from './common/ShareLink';
 
-interface FolderData {
-  created_at: string;
-  favorite: boolean;
-  id: number;
-  link: { count: number };
-  name: string;
-  user_id: number;
-}
-
-interface CurrentFolder {
-  id: number;
-  name: string;
-}
+import { Folder, CurrentFolder } from '../types/FolderType';
 
 interface FolderMainProps {
-  folderList: FolderData[];
+  folderList: Folder[];
   currentFolder: CurrentFolder;
   setCurrentFolder: React.Dispatch<React.SetStateAction<CurrentFolder>>;
 }
@@ -86,7 +76,7 @@ function FolderMain({
               handleFolderClick(0, '');
             }}
           >
-            <button className={!currentFolder.name ? `focused` : undefined}>
+            <button className={classNames({ focused: !currentFolder.name })}>
               전체
             </button>
           </li>
@@ -99,7 +89,9 @@ function FolderMain({
                 }}
               >
                 <button
-                  className={currentFolder.name === item.name ? `focused` : ''}
+                  className={classNames({
+                    focused: currentFolder.name === item.name,
+                  })}
                 >
                   {item.name}
                 </button>
