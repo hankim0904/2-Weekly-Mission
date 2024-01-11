@@ -1,5 +1,5 @@
 import { formatDate, countAgo } from '@/utils/getDateInfo';
-import { Link } from '../types/SharedType';
+import { Link } from '@/types/SharedType';
 import Image from 'next/image';
 
 interface SharedMainCardProps {

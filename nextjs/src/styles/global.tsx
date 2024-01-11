@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
 * {
@@ -19,7 +19,14 @@ a {
 }
 
 button {
+  background: none;
+	color: inherit;
+	border: none;
   cursor:pointer;
+}
+
+input {
+  outline: none;
 }
 
 :root {

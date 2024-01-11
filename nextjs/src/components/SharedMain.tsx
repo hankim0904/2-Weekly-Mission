@@ -1,7 +1,6 @@
-import SharedMainCard from './SharedMainCard';
-import search from '../../../images/shared/search.svg';
-import * as S from '../styles/Main';
-import { Link } from '../types/SharedType';
+import SharedMainCard from '@/components/SharedMainCard';
+import * as S from '@/styles/Main';
+import { Link } from '@/types/SharedType';
 import Image from 'next/image';
 
 const MainSearchBox = ({ className }: { className: string }) => (

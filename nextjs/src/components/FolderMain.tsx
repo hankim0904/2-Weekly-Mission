@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import FolderMainCards from '@/components/FolderMainCards';
 import Modal from '@/components/common/Modal';
-import Input from '@/components/./common/Input';
+import Search from '@/components/common/Search';
 import Button from '@/components/common/Button';
 import ShareLink from '@/components/common/ShareLink';
 
@@ -154,7 +154,7 @@ function FolderMain({
       {isAddModalOpen && (
         <Modal modalTitle="폴더 추가" onClose={handleCloseModal}>
           <div className="modal-content">
-            <Input placeholder="내용 입력" />
+            <Search placeholder="내용 입력" />
             <Button variant="default" size="lg">
               추가하기
             </Button>
@@ -177,7 +177,7 @@ function FolderMain({
       {isEditModalOpen && (
         <Modal modalTitle="폴더 이름 변경" onClose={handleCloseModal}>
           <div className="modal-content">
-            <Input placeholder="내용 입력" />
+            <Search placeholder="내용 입력" />
             <Button variant="default" size="lg">
               변경하기
             </Button>

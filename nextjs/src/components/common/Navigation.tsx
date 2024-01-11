@@ -6,6 +6,7 @@ import { ENDPOINT, ERROR_MESSAGE } from '@/stores/constants';
 
 import styled from 'styled-components';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const flex = `
   display: flex;
@@ -133,7 +134,7 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
   return (
     <Nav $isSticky={isSticky}>
       <div className="gnb">
-        <a href="/">
+        <Link href="/">
           <Image
             className="cta logo"
             src="/images/logo.svg"
@@ -141,7 +142,7 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
             height={16}
             alt="로고"
           />
-        </a>
+        </Link>
         {profile ? (
           <div className="cta profile">
             <Image
