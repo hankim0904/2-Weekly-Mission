@@ -1,0 +1,177 @@
+@import "./global.css";
+
+body {
+  background: var(--background);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    "title"
+    "form"
+    "social-login";
+  grid-template-columns: minmax(40rem, auto);
+  justify-content: center;
+  gap: 3rem;
+  padding: 23.8rem 0 25.2rem;
+  margin: 0 auto;
+}
+
+.title {
+  grid-area: title;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.join-suggestion,
+.login-suggestion {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.query {
+  color: var(--black);
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 2.4rem;
+}
+
+.join-link,
+.login-link {
+  text-decoration: underline;
+  color: var(--primary);
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+form {
+  grid-area: form;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.sign-input-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.6rem;
+  position: relative;
+}
+
+label {
+  color: var(--black);
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 0.6rem;
+}
+
+input {
+  border-radius: 8px;
+  border: 1px solid var(--gray20);
+  background: var(--white);
+  color: var(--gray100);
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 2.4rem;
+  padding: 1.8rem 1.5rem;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid var(--primary);
+}
+
+.eye-button {
+  width: 1.6rem;
+  height: 1.6rem;
+  background-image: url(../images/sign/eye-off.svg);
+  cursor: pointer;
+  position: absolute;
+  right: 1.5rem;
+  top: 5rem;
+  border: none;
+  display: flex;
+  justify-content: center;
+}
+
+.eye-button.active {
+  background-image: url(../images/sign/eye-on.svg);
+}
+
+.sign-button {
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(91deg, var(--primary) 0.12%, #6ae3fe 101.84%);
+  color: #f5f5f5;
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding: 16px 20px;
+  margin-top: 0.6rem;
+  cursor: pointer;
+}
+
+.social-login,
+.social-join {
+  grid-area: social-login;
+  border-radius: 0.8rem;
+  border: 0.1rem solid var(--gray20);
+  background: var(--gray10);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.6rem;
+  padding: 1.2rem 2.4rem;
+  margin-top: 0.2rem;
+}
+
+.social-title {
+  color: var(--gray100);
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.social-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .grid-container {
+    grid-template-columns: minmax(0, 40rem);
+    padding-top: 12rem;
+    padding-left: 3.2rem;
+    padding-right: 3.2rem;
+  }
+}
+
+.redBox {
+  border: 1px solid var(--red);
+}
+
+.redBox:focus {
+  outline: none;
+  border: 1px solid var(--red);
+}
+
+.message {
+  color: var(--red);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

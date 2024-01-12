@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signin</title>
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css"
+    />
+    <link rel="stylesheet" href="../src/sign.css" />
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="title">
+        <a href="/">
+          <img src="../images/sign/logo.svg" alt="Linkabrary 로고" />
+        </a>
+        <div class="join-suggestion">
+          <span class="query">회원이 아니신가요?</span>
+          <a class="join-link" href="./../signup/index.html">회원 가입하기</a>
+        </div>
+      </div>
+      <form>
+        <div class="sign-input-box">
+          <label for="useremail">이메일</label>
+          <input
+            id="useremail"
+            name="useremail"
+            type="email"
+            placeholder="이메일"
+          />
+          <p></p>
+        </div>
+        <div class="sign-input-box">
+          <label for="password">비밀번호</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="email"
+            placeholder="비밀번호"
+          />
+          <p></p>
+          <button class="eye-button" type="button"></button>
+        </div>
+        <button class="sign-button" type="submit">로그인</button>
+      </form>
+      <div class="social-login">
+        <span class="social-title">소셜 로그인</span>
+        <div class="social-logos">
+          <a href="https://www.google.com/">
+            <img src="../images/sign/google_logo.svg" />
+          </a>
+          <a href="https://www.kakaocorp.com/page/">
+            <img src="../images/sign/kakao_logo.svg" />
+          </a>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./signin.js"></script>
+  </body>
+</html>
