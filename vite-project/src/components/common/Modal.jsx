@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import Overlay from "./Overlay";
-import styled from "styled-components";
-import closeIcon from "../../assets/close.svg";
+import { useEffect } from 'react';
+import Overlay from './Overlay';
+import styled from 'styled-components';
+import closeIcon from '../../assets/close.svg';
 
 const StyledModal = styled.div`
   position: relative;
@@ -60,8 +60,8 @@ const Modal = ({ onClose, modalTitle, subTitle, children }) => {
       width: 100%;`;
     return () => {
       const scrollY = document.body.style.top;
-      document.body.style.cssText = "";
-      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+      document.body.style.cssText = '';
+      window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
     };
   }, []);
 
