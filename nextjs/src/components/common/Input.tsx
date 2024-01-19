@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FocusEventHandler, useState } from 'react';
+import { ChangeEventHandler, FocusEventHandler, useState, forwardRef } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 
@@ -6,12 +6,11 @@ const InputContainer = styled.div`
   position: relative;
 `;
 
-const InputField = styled.input<{ isError: boolean }>`
+const InputField = styled.input<{ $isError: boolean }>`
   width: 100%;
   padding: 1.8rem 1.5rem;
   border-radius: 0.8rem;
-  border: 1px solid
-    ${({ isError }) => (isError ? 'var(--red)' : 'var(--gray20)')};
+  border: 1px solid ${({ $isError }) => ($isError ? 'var(--red)' : 'var(--gray20)')};
   font-size: 1.6rem;
   font-weight: 400;
   color: var(--gray100);
@@ -22,8 +21,7 @@ const InputField = styled.input<{ isError: boolean }>`
   }
 
   &:focus {
-    border: 1px solid
-      ${({ isError }) => (isError ? 'var(--red)' : 'var(--gray20)')};
+    border: 1px solid ${({ $isError }) => ($isError ? 'var(--red)' : 'var(--gray20)')};
   }
 `;
 
@@ -50,58 +48,52 @@ const HelperText = styled.p`
 `;
 
 interface InputProps {
-  value: string | number;
   placeholder?: string;
   isPassword: boolean;
-  isError: boolean;
+  $isError: boolean;
   helperText?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
-  onBlur?: FocusEventHandler<HTMLInputElement>;
+  onBlur: FocusEventHandler<HTMLInputElement>;
 }
 
-function Input({
-  value,
-  placeholder,
-  isPassword = false,
-  isError = false,
-  helperText,
-  onChange,
-  onBlur,
-}: InputProps) {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ placeholder, isPassword = false, $isError = false, helperText, onChange, onBlur }, ref) => {
+    const [isPasswordVisible, setIsPasswordVisible] = useState(!isPassword);
 
-  const handleTogglePassword = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
+    const handleTogglePassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      setIsPasswordVisible(!isPasswordVisible);
+    };
 
-  return (
-    <>
-      <InputContainer>
-        <InputField
-          value={value}
-          type={isPasswordVisible ? 'text' : 'password'}
-          placeholder={placeholder}
-          isError={isError}
-        ></InputField>
-        {isPassword && (
-          <EyeIcon>
-            <button onClick={handleTogglePassword}>
-              <Image
-                fill
-                src={
-                  isPasswordVisible
-                    ? '/images/eye-on.svg'
-                    : '/images/eye-off.svg'
-                }
-                alt="비밀번호 가리기 아이콘"
-              />
-            </button>
-          </EyeIcon>
-        )}
-      </InputContainer>
-      {isError && <HelperText>{helperText}</HelperText>}
-    </>
-  );
-}
+    return (
+      <>
+        <InputContainer>
+          <InputField
+            ref={ref}
+            type={isPasswordVisible ? 'text' : 'password'}
+            placeholder={placeholder}
+            $isError={$isError}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+          {isPassword && (
+            <EyeIcon>
+              <button type="button" onClick={handleTogglePassword}>
+                {isPasswordVisible ? (
+                  <Image fill src={'/images/eye-on.svg'} alt="비밀번호 보이기 아이콘" />
+                ) : (
+                  <Image fill src={'/images/eye-off.svg'} alt="비밀번호 가리기 아이콘" />
+                )}
+              </button>
+            </EyeIcon>
+          )}
+        </InputContainer>
+        {$isError && <HelperText>{helperText}</HelperText>}
+      </>
+    );
+  }
+);
+
+Input.displayName = 'Input';
 
 export default Input;

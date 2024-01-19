@@ -29,6 +29,14 @@ const RemoveButton = css`
   background-color: var(--red);
 `;
 
+const StyledDefaultButton = styled(BaseButton)`
+  ${DefaultButton};
+`;
+
+const StyledRemoveButton = styled(BaseButton)`
+  ${RemoveButton};
+`;
+
 interface ButtonProps {
   children: React.ReactNode;
   variant: 'default' | 'remove';
@@ -36,7 +44,7 @@ interface ButtonProps {
 }
 
 function Button({ children, variant, size, ...props }: ButtonProps) {
-  let ButtonComponent = BaseButton;
+  let ButtonComponent: any = BaseButton;
 
   switch (size) {
     case 'lg':
@@ -52,22 +60,20 @@ function Button({ children, variant, size, ...props }: ButtonProps) {
       break;
   }
 
+  let StyledComponent: any;
+
   switch (variant) {
     case 'default':
-      ButtonComponent = styled(ButtonComponent)`
-        ${DefaultButton};
-      `;
+      StyledComponent = StyledDefaultButton;
       break;
     case 'remove':
-      ButtonComponent = styled(ButtonComponent)`
-        ${RemoveButton};
-      `;
+      StyledComponent = StyledRemoveButton;
       break;
     default:
       break;
   }
 
-  return <ButtonComponent {...props}>{children}</ButtonComponent>;
+  return <StyledComponent {...props}>{children}</StyledComponent>;
 }
 
 export default Button;
