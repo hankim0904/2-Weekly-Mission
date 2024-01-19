@@ -3,36 +3,11 @@ import { Controller, useForm } from 'react-hook-form';
 import useSignin from '@/hooks/useSignin';
 import { useTokenRedirect } from '@/hooks/useTokenRedirect';
 
-import styled from 'styled-components';
 import Input from './common/Input';
 import Button from './common/Button';
+import { SignForm } from '@/styles/SignForm';
 
 import { SIGN_ERROR_MESSAGE } from '@/stores/constants';
-
-const SignForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  margin-bottom: 3.2rem;
-  width: 40rem;
-
-  .sign-input {
-    display: flex;
-    flex-direction: column;
-    gap: 2.4rem;
-
-    &-element {
-      display: flex;
-      flex-direction: column;
-
-      label {
-        font-size: 14px;
-        font-weight: 400;
-        margin-bottom: 1.2rem;
-      }
-    }
-  }
-`;
 
 const SigninForm = () => {
   const { control, handleSubmit, watch, setError } = useForm({

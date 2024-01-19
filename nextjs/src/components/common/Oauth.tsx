@@ -27,6 +27,10 @@ const SocialLogin = styled.div`
       position: relative;
     }
   }
+
+  @media (max-width: 767px) {
+    width: calc(100vw - 6.5rem);
+  }
 `;
 
 const Oauth = () => {
