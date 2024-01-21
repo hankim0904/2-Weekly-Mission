@@ -5,6 +5,7 @@ import { useTokenRedirect } from '@/hooks/useTokenRedirect';
 
 import Input from './common/Input';
 import Button from './common/Button';
+import PasswordEyeButton from './common/PasswordEyeButton';
 import { SignForm } from '@/styles/SignForm';
 
 import { SIGN_ERROR_MESSAGE } from '@/stores/constants';
@@ -20,7 +21,6 @@ const SigninForm = () => {
     password: watch('password'),
   });
   useTokenRedirect(apiData?.data?.accessToken);
-  console.log(error);
 
   useEffect(() => {
     if (error) {
@@ -53,8 +53,8 @@ const SigninForm = () => {
             render={({ field, fieldState }) => (
               <Input
                 {...field}
+                type="text"
                 placeholder="이메일을 입력해 주세요."
-                isPassword={false}
                 $isError={Boolean(fieldState.error)}
                 helperText={fieldState.error?.message}
               />
@@ -72,8 +72,9 @@ const SigninForm = () => {
             render={({ field, fieldState }) => (
               <Input
                 {...field}
+                type="password"
                 placeholder="비밀번호를 입력해 주세요."
-                isPassword={true}
+                rightContent={(props) => <PasswordEyeButton {...props} />}
                 $isError={Boolean(fieldState.error)}
                 helperText={fieldState.error?.message}
               />
@@ -81,7 +82,7 @@ const SigninForm = () => {
           />
         </div>
       </div>
-      <Button variant="default">로그인</Button>
+      <Button colorVariant="default">로그인</Button>
     </SignForm>
   );
 };

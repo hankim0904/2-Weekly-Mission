@@ -128,26 +128,17 @@ function FolderHeader({ folderList }: FolderListProps) {
             <Image fill src="/images/link.svg" alt="첨부 아이콘" />
           </div>
         </button>
-        <input
-          placeholder="링크를 추가해 보세요."
-          onChange={handleInputUrlChange}
-        />
+        <input placeholder="링크를 추가해 보세요." onChange={handleInputUrlChange} />
         <button className="link-cta" onClick={handleAddModal}>
           추가하기
         </button>
       </form>
 
       {isAddModalOpen && (
-        <Modal
-          modalTitle="폴더에 추가"
-          subTitle={inputUrl}
-          onClose={handleCloseModal}
-        >
+        <Modal modalTitle="폴더에 추가" subTitle={inputUrl} onClose={handleCloseModal}>
           <div className="modal-content">
             <FolderList folderList={folderList} />
-            <Button variant="default" size="lg">
-              추가하기
-            </Button>
+            <Button colorVariant="default">추가하기</Button>
           </div>
         </Modal>
       )}

@@ -9,6 +9,7 @@ const StyledModal = styled.div`
   border: 1px solid #ccd5e3;
   border-radius: 15px;
   background-color: var(--white);
+  width: 36rem;
 `;
 
 const Header = styled.header`
@@ -74,12 +75,7 @@ const Modal = ({ onClose, modalTitle, subTitle, children }: ModalProps) => {
     <Overlay>
       <StyledModal>
         <CloseButton className="modal-btn-close" onClick={onClose}>
-          <Image
-            src="/images/close.svg"
-            width={24}
-            height={24}
-            alt="모달 닫기 버튼"
-          />
+          <Image src="/images/close.svg" width={24} height={24} alt="모달 닫기 버튼" />
         </CloseButton>
         <Header className="modal-header">
           <ModalTitle>{modalTitle}</ModalTitle>

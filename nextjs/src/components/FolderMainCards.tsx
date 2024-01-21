@@ -46,11 +46,11 @@ interface LinkDataApiResponse {
 function FolderMainCards({ currentFolder, folderList }: FolderMainCardsProps) {
   const getLinkList = useCallback(
     (): Promise<LinkDataApiResponse> =>
-      getApiInfo(ENDPOINT.userLinks, ERROR_MESSAGE.userLinks, currentFolder),
+      getApiInfo(`${ENDPOINT.userLinks}${currentFolder ? `?folderId=${currentFolder}` : ''}`, ERROR_MESSAGE.userLinks),
     [currentFolder]
   );
-  const { apiData: linkListResponse, execute: fetchLinkList } =
-    useAsync(getLinkList);
+
+  const { apiData: linkListResponse, execute: fetchLinkList } = useAsync(getLinkList);
   const linkList = linkListResponse?.data || [];
 
   useEffect(() => {
@@ -66,13 +66,7 @@ function FolderMainCards({ currentFolder, folderList }: FolderMainCardsProps) {
       ) : (
         <ul className="cards">
           {linkList.map((item) => (
-            <FolderMainCard
-              key={item.id}
-              linkData={item}
-              target="_blank"
-              rel="noreferrer"
-              folderList={folderList}
-            />
+            <FolderMainCard key={item.id} linkData={item} target="_blank" rel="noreferrer" folderList={folderList} />
           ))}
         </ul>
       )}

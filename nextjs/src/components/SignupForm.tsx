@@ -3,6 +3,7 @@ import { useTokenRedirect } from '@/hooks/useTokenRedirect';
 
 import Input from './common/Input';
 import Button from './common/Button';
+import PasswordEyeButton from './common/PasswordEyeButton';
 import { SignForm } from '@/styles/SignForm';
 
 import { SIGN_ERROR_MESSAGE } from '@/stores/constants';
@@ -51,8 +52,8 @@ const SignupForm = () => {
             render={({ field, fieldState }) => (
               <Input
                 {...field}
+                type="text"
                 placeholder="이메일을 입력해 주세요."
-                isPassword={false}
                 $isError={Boolean(fieldState.error)}
                 helperText={fieldState.error?.message}
               />
@@ -74,8 +75,9 @@ const SignupForm = () => {
             render={({ field, fieldState }) => (
               <Input
                 {...field}
+                type="password"
                 placeholder="영문, 숫자를 조합해 8자 이상 입력해 주세요."
-                isPassword={true}
+                rightContent={(props) => <PasswordEyeButton {...props} />}
                 $isError={Boolean(fieldState.error)}
                 helperText={fieldState.error?.message}
               />
@@ -100,8 +102,9 @@ const SignupForm = () => {
             render={({ field, fieldState }) => (
               <Input
                 {...field}
+                type="password"
                 placeholder={'비밀번호와 일치하는 값을 입력해 주세요.'}
-                isPassword={true}
+                rightContent={(props) => <PasswordEyeButton {...props} />}
                 $isError={Boolean(fieldState.error)}
                 helperText={fieldState.error?.message}
               />
@@ -109,7 +112,7 @@ const SignupForm = () => {
           />
         </div>
       </div>
-      <Button variant="default">회원가입</Button>
+      <Button colorVariant="default">회원가입</Button>
     </SignForm>
   );
 };

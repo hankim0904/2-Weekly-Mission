@@ -1,5 +1,4 @@
-import { ChangeEventHandler, FocusEventHandler, useState, forwardRef } from 'react';
-import Image from 'next/image';
+import { useState, forwardRef, ReactNode, ChangeEventHandler, FocusEventHandler } from 'react';
 import styled from 'styled-components';
 
 const InputContainer = styled.div`
@@ -25,19 +24,11 @@ const InputField = styled.input<{ $isError: boolean }>`
   }
 `;
 
-const EyeIcon = styled.div`
-  width: 1.6rem;
-  height: 1.6rem;
+const RightContent = styled.div`
   position: absolute;
   right: 1.5rem;
   top: 50%;
   transform: translate(0%, -50%);
-
-  button {
-    width: 100%;
-    height: 100%;
-    position: relative;
-  }
 `;
 
 const HelperText = styled.p`
@@ -47,22 +38,29 @@ const HelperText = styled.p`
   font-weight: 400;
 `;
 
+type RightContentProps = {
+  inputType: string;
+  onToggle: () => void;
+};
+
+type RightContentType = (props: RightContentProps) => ReactNode;
+
 interface InputProps {
+  type: string;
   placeholder?: string;
-  isPassword: boolean;
   $isError: boolean;
+  rightContent?: RightContentType;
   helperText?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onBlur: FocusEventHandler<HTMLInputElement>;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ placeholder, isPassword = false, $isError = false, helperText, onChange, onBlur }, ref) => {
-    const [isPasswordVisible, setIsPasswordVisible] = useState(!isPassword);
+  ({ type, placeholder, $isError = false, rightContent, helperText, onChange, onBlur }, ref) => {
+    const [inputType, setInputType] = useState(type);
 
-    const handleTogglePassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      setIsPasswordVisible(!isPasswordVisible);
+    const handleTogglePassword = () => {
+      setInputType((prevType) => (prevType === 'text' ? 'password' : 'text'));
     };
 
     return (
@@ -70,25 +68,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <InputContainer>
           <InputField
             ref={ref}
-            type={isPasswordVisible ? 'text' : 'password'}
+            type={inputType}
             placeholder={placeholder}
             $isError={$isError}
             onChange={onChange}
             onBlur={onBlur}
           />
-          {isPassword && (
-            <EyeIcon>
-              <button type="button" onClick={handleTogglePassword}>
-                {isPasswordVisible ? (
-                  <Image fill src={'/images/eye-on.svg'} alt="비밀번호 보이기 아이콘" />
-                ) : (
-                  <Image fill src={'/images/eye-off.svg'} alt="비밀번호 가리기 아이콘" />
-                )}
-              </button>
-            </EyeIcon>
-          )}
+          {rightContent && <RightContent>{rightContent({ inputType, onToggle: handleTogglePassword })}</RightContent>}
         </InputContainer>
-        {$isError && <HelperText>{helperText}</HelperText>}
+        {helperText && <HelperText>{helperText}</HelperText>}
       </>
     );
   }
