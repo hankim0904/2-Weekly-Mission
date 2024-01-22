@@ -65,26 +65,18 @@ const StyledSharedHeader = styled.header`
   }
 `;
 
-function SharedHeader({ folder }: { folder: Folder }) {
-  const {
-    name,
-    owner: { name: ownerName, profileImageSource },
-  } = folder;
+function SharedHeader({ folderName, userProfile }: { folder: Folder }) {
+  const { name, image_source } = userProfile;
 
   return (
     <StyledSharedHeader>
       <div className="folder-owner">
         <div className="owner-img">
-          <Image
-            fill
-            className="owner-img"
-            src={profileImageSource}
-            alt={ownerName}
-          />
+          <Image fill className="owner-img" src={image_source} alt={name} />
         </div>
-        <span className="owner-name">@{ownerName}</span>
+        <span className="owner-name">@{name}</span>
       </div>
-      <h1 className="folder-name">{name}</h1>
+      <h1 className="folder-name">{folderName}</h1>
     </StyledSharedHeader>
   );
 }

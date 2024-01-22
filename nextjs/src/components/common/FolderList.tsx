@@ -1,5 +1,7 @@
+import React, { useEffect, useState } from 'react'; // React 및 useEffect, useState 추가
 import styled from 'styled-components';
 import { Folder } from '@/types/FolderType';
+import instance from '@/api/InterceptorManager';
 
 const AddFolderList = styled.ul`
   display: flex;
@@ -43,17 +45,37 @@ interface FolderListProps {
   folderList: Folder[];
 }
 
-const FolderList = ({ folderList }: FolderListProps) => {
-  return (
-    <AddFolderList>
-      {folderList.map((item) => (
-        <AddFolderListItem key={item.id}>
-          <FolderName>{item.name}</FolderName>
-          <LinkCount>{item.link.count}개 링크</LinkCount>
-        </AddFolderListItem>
-      ))}
-    </AddFolderList>
-  );
+const FolderList: React.FC<FolderListProps> = ({ folderList }) => {
+  const [folderListItems, setFolderListItems] = useState([]);
+
+  const getLinkList = async (folderId) => {
+    const endpoint = `/links?folderId=${folderId}`;
+    const linkListResponse = await instance.get(endpoint);
+    const linkListData = linkListResponse.data.data.folder;
+    return linkListData.length;
+  };
+
+  const renderFolderList = async () => {
+    const items = await Promise.all(
+      folderList.map(async (item) => {
+        const linkCount = await getLinkList(item.id);
+        return (
+          <AddFolderListItem key={item.id}>
+            <FolderName>{item.name}</FolderName>
+            <LinkCount>{linkCount}개 링크</LinkCount>
+          </AddFolderListItem>
+        );
+      })
+    );
+
+    setFolderListItems(items);
+  };
+
+  useEffect(() => {
+    renderFolderList();
+  }, [folderList]);
+
+  return <AddFolderList>{folderListItems}</AddFolderList>;
 };
 
 export default FolderList;

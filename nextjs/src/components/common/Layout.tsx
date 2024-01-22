@@ -6,10 +6,10 @@ interface LayoutProps {
   isSticky?: boolean;
 }
 
-function Layout({ children, isSticky = true }: LayoutProps) {
+function Layout({ children, userProfile, isSticky = true }: LayoutProps) {
   return (
     <>
-      <Navigation isSticky={isSticky} />
+      <Navigation userProfile={userProfile} isSticky={isSticky} />
       <main>{children}</main>
       <Footer />
     </>

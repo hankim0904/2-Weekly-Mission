@@ -43,19 +43,19 @@ interface LinkDataApiResponse {
   data: Link[];
 }
 
-function FolderMainCards({ currentFolder, folderList }: FolderMainCardsProps) {
-  const getLinkList = useCallback(
-    (): Promise<LinkDataApiResponse> =>
-      getApiInfo(`${ENDPOINT.userLinks}${currentFolder ? `?folderId=${currentFolder}` : ''}`, ERROR_MESSAGE.userLinks),
-    [currentFolder]
-  );
+function FolderMainCards({ currentFolder, folderList, linkList }: FolderMainCardsProps) {
+  // const getLinkList = useCallback(
+  //   (): Promise<LinkDataApiResponse> =>
+  //     getApiInfo(`${ENDPOINT.userLinks}${currentFolder ? `?folderId=${currentFolder}` : ''}`, ERROR_MESSAGE.userLinks),
+  //   [currentFolder]
+  // );
 
-  const { apiData: linkListResponse, execute: fetchLinkList } = useAsync(getLinkList);
-  const linkList = linkListResponse?.data || [];
+  // const { apiData: linkListResponse, execute: fetchLinkList } = useAsync(getLinkList);
+  // const linkList = linkListResponse?.data || [];
 
-  useEffect(() => {
-    fetchLinkList();
-  }, [fetchLinkList]);
+  // useEffect(() => {
+  //   fetchLinkList();
+  // }, [fetchLinkList]);
 
   return (
     <>

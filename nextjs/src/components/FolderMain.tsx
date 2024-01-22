@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import * as S from '@/styles/Main';
 import classNames from 'classnames';
 
 import FolderMainCards from '@/components/FolderMainCards';
 import Modal from '@/components/common/Modal';
-import Search from '@/components/common/Search';
+import ModalSearch from '@/components/common/ModalSearch';
 import Button from '@/components/common/Button';
 import ShareLink from '@/components/common/ShareLink';
 
@@ -18,17 +19,15 @@ interface FolderMainProps {
   setCurrentFolder: React.Dispatch<React.SetStateAction<CurrentFolder>>;
 }
 
-function FolderMain({ folderList, currentFolder, setCurrentFolder }: FolderMainProps) {
+function FolderMain({ folderList, linkList, currentFolder }: FolderMainProps) {
+  const router = useRouter();
   const [isAddModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState<boolean>(false);
 
-  const handleFolderClick = (folderId: number, folderName: string) => {
-    setCurrentFolder({
-      id: folderId,
-      name: folderName,
-    });
+  const handleFolderClick = (folderId) => {
+    router.push(`/folder/${folderId}`);
   };
 
   const handleAddModal = () => {
@@ -64,22 +63,22 @@ function FolderMain({ folderList, currentFolder, setCurrentFolder }: FolderMainP
         <ul>
           <li
             onClick={() => {
-              handleFolderClick(0, '');
+              handleFolderClick('');
             }}
           >
-            <button className={classNames({ focused: !currentFolder.name })}>전체</button>
+            <button className={classNames({ focused: !currentFolder })}>전체</button>
           </li>
           {folderList?.map((item) => {
             return (
               <li
                 key={item.id}
                 onClick={() => {
-                  handleFolderClick(item.id, item.name);
+                  handleFolderClick(item.id);
                 }}
               >
                 <button
                   className={classNames({
-                    focused: currentFolder.name === item.name,
+                    focused: currentFolder === String(item.id),
                   })}
                 >
                   {item.name}
@@ -97,8 +96,8 @@ function FolderMain({ folderList, currentFolder, setCurrentFolder }: FolderMainP
         </button>
       </S.Folder>
       <S.Title>
-        {currentFolder.name ? <h1>{currentFolder.name}</h1> : <h1>전체</h1>}
-        {currentFolder.id !== 0 && (
+        {currentFolder ? <h1>{folderList.find((folder) => folder.id == currentFolder)?.name}</h1> : <h1>전체</h1>}
+        {currentFolder && (
           <div>
             <button onClick={handleShareModal}>
               <Image src="/images/share.svg" width={18} height={18} alt="공유 아이콘" />
@@ -115,12 +114,12 @@ function FolderMain({ folderList, currentFolder, setCurrentFolder }: FolderMainP
           </div>
         )}
       </S.Title>
-      <FolderMainCards currentFolder={currentFolder.id} folderList={folderList} />
+      <FolderMainCards currentFolder={currentFolder} folderList={folderList} linkList={linkList} />
 
       {isAddModalOpen && (
         <Modal modalTitle="폴더 추가" onClose={handleCloseModal}>
           <div className="modal-content">
-            <Search placeholder="내용 입력" />
+            <ModalSearch placeholder="내용 입력" />
             <Button colorVariant="default">추가하기</Button>
           </div>
         </Modal>
@@ -137,7 +136,7 @@ function FolderMain({ folderList, currentFolder, setCurrentFolder }: FolderMainP
       {isEditModalOpen && (
         <Modal modalTitle="폴더 이름 변경" onClose={handleCloseModal}>
           <div className="modal-content">
-            <Search placeholder="내용 입력" />
+            <ModalSearch placeholder="내용 입력" />
             <Button colorVariant="default">변경하기</Button>
           </div>
         </Modal>

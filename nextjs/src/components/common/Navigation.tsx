@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 
 import useAsync from '@/hooks/useAsync';
+import { axiosInstance } from '@/api/axiosInstance';
 import { getApiInfo } from '@/api/api';
 import { ENDPOINT, ERROR_MESSAGE } from '@/stores/constants';
 
@@ -38,11 +39,7 @@ const Nav = styled.nav<NavProps>`
     width: 12.8rem;
     border: none;
     border-radius: 0.8rem;
-    background-image: linear-gradient(
-      91deg,
-      var(--primary) 0.12%,
-      #6ae3fe 101.84%
-    );
+    background-image: linear-gradient(91deg, var(--primary) 0.12%, #6ae3fe 101.84%);
     color: #f5f5f5;
     font-size: 1.8rem;
     font-weight: 600;
@@ -115,44 +112,17 @@ interface userDataResponse {
   data: userData[];
 }
 
-function Navigation({ isSticky }: { isSticky: boolean }) {
-  const [profile, setProfile] = useState<ProfileData | null>(null);
-
-  const getUser = (): Promise<userDataResponse> =>
-    getApiInfo(ENDPOINT.user, ERROR_MESSAGE.user);
-  const { apiData: profileResponse } = useAsync(getUser);
-
-  const profileData = useMemo(() => {
-    return profileResponse?.data || [];
-  }, [profileResponse]);
-  const { image_source, email } = profileData[0] || {};
-
-  useEffect(() => {
-    setProfile(profileData[0] ? { image_source, email } : null);
-  }, [profileData, email, image_source]);
-
+function Navigation({ userProfile, isSticky }) {
   return (
     <Nav $isSticky={isSticky}>
       <div className="gnb">
         <Link href="/">
-          <Image
-            className="cta logo"
-            src="/images/logo.svg"
-            width={88.7}
-            height={16}
-            alt="로고"
-          />
+          <Image className="cta logo" src="/images/logo.svg" width={88.7} height={16} alt="로고" />
         </Link>
-        {profile ? (
+        {userProfile ? (
           <div className="cta profile">
-            <Image
-              className="profile-logo"
-              src={profile.image_source}
-              width={28}
-              height={28}
-              alt="프로필 로고"
-            />
-            <span className="profile-email">{profile.email}</span>
+            <Image className="profile-logo" src={userProfile.image_source} width={28} height={28} alt="프로필 로고" />
+            <span className="profile-email">{userProfile.email}</span>
           </div>
         ) : (
           <button className="cta login" type="button">

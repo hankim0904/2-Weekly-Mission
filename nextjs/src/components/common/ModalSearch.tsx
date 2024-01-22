@@ -17,8 +17,8 @@ const StyledInput = styled.input`
   }
 `;
 
-const Search = ({ type = 'text', ...props }) => {
+const ModalSearch = ({ type = 'text', ...props }) => {
   return <StyledInput type={type} {...props} />;
 };
 
-export default Search;
+export default ModalSearch;
