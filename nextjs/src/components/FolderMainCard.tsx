@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { MouseEvent, useState } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
@@ -6,7 +7,7 @@ import Modal from '@/components/common/Modal';
 import FolderList from '@/components/common/FolderList';
 import Button from '@/components/common/Button';
 
-import { Folder, Link } from '@/types/FolderType';
+import { Folder, LinkListItem } from '@/types/FolderType';
 
 import { formatDate, countAgo } from '@/utils/getDateInfo';
 import Image from 'next/image';
@@ -44,7 +45,7 @@ const StyledFolderMainCard = styled.li`
 `;
 
 interface FolderMainCardProps {
-  linkData: Link;
+  linkData: LinkListItem;
   target: string;
   rel: string;
   folderList: Folder[];

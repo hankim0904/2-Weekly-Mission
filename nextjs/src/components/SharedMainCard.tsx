@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { formatDate, countAgo } from '@/utils/getDateInfo';
 import { Link } from '@/types/SharedType';
 import Image from 'next/image';
@@ -20,12 +21,7 @@ function SharedMainCard({ link, target, rel }: SharedMainCardProps) {
           </div>
         ) : (
           <div className="card-img-default">
-            <Image
-              src="/images/logo.svg"
-              width={133}
-              height={24}
-              alt="기본 이미지"
-            />
+            <Image src="/images/logo.svg" width={133} height={24} alt="기본 이미지" />
           </div>
         )}
         <div className="container">

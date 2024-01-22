@@ -1,22 +1,19 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import useAsyncAxios from '@/hooks/useAsyncAxios';
 import { axiosInstance } from '@/api/axiosInstance';
-import { getApiInfo } from '@/api/api';
-import { ENDPOINT, ERROR_MESSAGE } from '@/stores/constants';
+import { GetServerSidePropsContext } from 'next';
 
 import SharedHeader from '@/components/SharedHeader';
 import SharedMain from '@/components/SharedMain';
 import Layout from '@/components/common/Layout';
 
-import { Link, Folder } from '@/types/SharedType';
-import { APP_DIR_ALIAS } from 'next/dist/lib/constants';
+import { Link, UserProfile } from '@/types/SharedType';
 
-interface FolderApiResponse {
-  folder: Folder;
+interface SharedPageProps {
+  folderName: string;
+  userProfile: UserProfile;
+  links: Link[];
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const folderId = context.query['folderId'];
 
   const folderResponse = await axiosInstance.get(`/folders/${folderId}`);
@@ -37,7 +34,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-function SharedPage({ folderName, userProfile, links }) {
+function SharedPage({ folderName, userProfile, links }: SharedPageProps) {
   return (
     <Layout userProfile={userProfile}>
       <SharedHeader folderName={folderName} userProfile={userProfile} />

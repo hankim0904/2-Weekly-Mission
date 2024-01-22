@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Folder } from '@/types/SharedType';
 import Image from 'next/image';
+import { UserProfile } from '@/types/FolderType';
 
 const flex = `
   display: flex;
@@ -65,7 +65,12 @@ const StyledSharedHeader = styled.header`
   }
 `;
 
-function SharedHeader({ folderName, userProfile }: { folder: Folder }) {
+interface SharedHeaderProps {
+  folderName: string;
+  userProfile: UserProfile;
+}
+
+function SharedHeader({ folderName, userProfile }: SharedHeaderProps) {
   const { name, image_source } = userProfile;
 
   return (

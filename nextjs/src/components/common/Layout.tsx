@@ -1,8 +1,11 @@
 import Navigation from '@/components/common/Navigation';
 import Footer from '@/components/common/Footer';
 
+import { UserProfile } from '@/types/FolderType';
+
 interface LayoutProps {
   children: React.ReactNode;
+  userProfile: UserProfile;
   isSticky?: boolean;
 }
 

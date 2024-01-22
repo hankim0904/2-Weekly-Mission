@@ -20,3 +20,12 @@ export interface Folder {
   links: Link[];
   count: number;
 }
+
+export interface UserProfile {
+  auth_id: string;
+  created_at: string;
+  email: string;
+  id: number;
+  image_source: string;
+  name: string;
+}

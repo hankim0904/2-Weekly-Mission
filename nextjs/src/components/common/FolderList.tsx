@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'; // React 및 useEffect, useState 추가
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
 import { Folder } from '@/types/FolderType';
 import instance from '@/api/InterceptorManager';
 
@@ -45,10 +47,10 @@ interface FolderListProps {
   folderList: Folder[];
 }
 
-const FolderList: React.FC<FolderListProps> = ({ folderList }) => {
-  const [folderListItems, setFolderListItems] = useState([]);
+const FolderList = ({ folderList }: FolderListProps) => {
+  const [folderListItems, setFolderListItems] = useState<React.ReactNode[]>([]);
 
-  const getLinkList = async (folderId) => {
+  const getLinkList = async (folderId: number) => {
     const endpoint = `/links?folderId=${folderId}`;
     const linkListResponse = await instance.get(endpoint);
     const linkListData = linkListResponse.data.data.folder;
@@ -73,7 +75,7 @@ const FolderList: React.FC<FolderListProps> = ({ folderList }) => {
 
   useEffect(() => {
     renderFolderList();
-  }, [folderList]);
+  }, []);
 
   return <AddFolderList>{folderListItems}</AddFolderList>;
 };

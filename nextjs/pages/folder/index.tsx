@@ -1,20 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import useAsync from '@/hooks/useAsync';
-import { getApiInfo } from '@/api/api';
-import { ENDPOINT, ERROR_MESSAGE } from '@/stores/constants';
-
 import FolderHeader from '@/components/FolderHeader';
 import FolderMain from '@/components/FolderMain';
 import Layout from '@/components/common/Layout';
 
-import { CurrentFolder, Folder } from '@/types/FolderType';
 import instance from '@/api/InterceptorManager';
-
-interface FolderApiResponse {
-  data: Folder[];
-}
 
 function FolderPage() {
   const router = useRouter();
@@ -35,9 +26,8 @@ function FolderPage() {
     setFolderList(folderListData);
   };
 
-  const getLinkList = async (folderId) => {
-    const endpoint = folderId ? `/links?folderId=${folderId}` : '/links';
-    const linkListResponse = await instance.get(endpoint);
+  const getLinkList = async () => {
+    const linkListResponse = await instance.get('/links');
     const linkListData = linkListResponse.data.data.folder;
     setLinkList(linkListData);
   };
@@ -49,11 +39,11 @@ function FolderPage() {
       router.push('/signin');
     } else {
       const { folderId } = router.query;
-      folderId && setCurrentFolder(folderId);
+      folderId && setCurrentFolder(folderId as string);
 
       getUserProfile();
       getFolderList();
-      getLinkList(folderId);
+      getLinkList();
     }
   }, [router]);
 

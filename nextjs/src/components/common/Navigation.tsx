@@ -1,13 +1,8 @@
-import { useEffect, useState, useMemo } from 'react';
-
-import useAsync from '@/hooks/useAsync';
-import { axiosInstance } from '@/api/axiosInstance';
-import { getApiInfo } from '@/api/api';
-import { ENDPOINT, ERROR_MESSAGE } from '@/stores/constants';
-
 import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { UserProfile } from '@/types/FolderType';
 
 const flex = `
   display: flex;
@@ -94,25 +89,12 @@ const Nav = styled.nav<NavProps>`
   }
 `;
 
-interface ProfileData {
-  image_source: string;
-  email: string;
+interface NavigationProps {
+  userProfile: UserProfile;
+  isSticky?: boolean;
 }
 
-interface userData {
-  id: number;
-  created_at: string;
-  name: string;
-  image_source: string;
-  email: string;
-  auth_id: string;
-}
-
-interface userDataResponse {
-  data: userData[];
-}
-
-function Navigation({ userProfile, isSticky }) {
+function Navigation({ userProfile, isSticky = true }: NavigationProps) {
   return (
     <Nav $isSticky={isSticky}>
       <div className="gnb">
@@ -121,7 +103,9 @@ function Navigation({ userProfile, isSticky }) {
         </Link>
         {userProfile ? (
           <div className="cta profile">
-            <Image className="profile-logo" src={userProfile.image_source} width={28} height={28} alt="프로필 로고" />
+            {userProfile.image_source && (
+              <Image className="profile-logo" src={userProfile.image_source} width={28} height={28} alt="프로필 로고" />
+            )}
             <span className="profile-email">{userProfile.email}</span>
           </div>
         ) : (

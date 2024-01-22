@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import instance from '@/api/InterceptorManager';
 
 import FolderHeader from '@/components/FolderHeader';
 import FolderMain from '@/components/FolderMain';
 import Layout from '@/components/common/Layout';
-
-import instance from '@/api/InterceptorManager';
 
 function FolderPage() {
   const router = useRouter();
@@ -27,8 +26,7 @@ function FolderPage() {
   };
 
   const getLinkList = async (folderId: string) => {
-    const endpoint = folderId ? `/links?folderId=${folderId}` : '/links';
-    const linkListResponse = await instance.get(endpoint);
+    const linkListResponse = await instance.get(`/links?folderId=${folderId}`);
     const linkListData = linkListResponse.data.data.folder;
     setLinkList(linkListData);
   };
@@ -40,11 +38,11 @@ function FolderPage() {
       router.push('/signin');
     } else {
       const { folderId } = router.query;
-      folderId && setCurrentFolder(folderId);
+      folderId && setCurrentFolder(folderId as string);
 
       getUserProfile();
       getFolderList();
-      getLinkList(folderId);
+      folderId && getLinkList(folderId as string);
     }
   }, [router]);
 
