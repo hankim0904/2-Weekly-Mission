@@ -1,13 +1,7 @@
-import { useEffect, useCallback } from 'react';
-
-import useAsync from '@/hooks/useAsync';
-import { getApiInfo } from '@/api/api';
-import { ENDPOINT, ERROR_MESSAGE } from '@/stores/constants';
-
 import styled from 'styled-components';
 import FolderMainCard from '@/components/FolderMainCard';
 
-import { Folder, Link } from '@/types/FolderType';
+import { Folder, LinkListItem } from '@/types/FolderType';
 
 const StyledNolink = styled.div`
   width: 106rem;
@@ -35,28 +29,11 @@ const StyledNolink = styled.div`
 `;
 
 interface FolderMainCardsProps {
-  currentFolder: number;
   folderList: Folder[];
+  linkList: LinkListItem[];
 }
 
-interface LinkDataApiResponse {
-  data: Link[];
-}
-
-function FolderMainCards({ currentFolder, folderList }: FolderMainCardsProps) {
-  const getLinkList = useCallback(
-    (): Promise<LinkDataApiResponse> =>
-      getApiInfo(ENDPOINT.userLinks, ERROR_MESSAGE.userLinks, currentFolder),
-    [currentFolder]
-  );
-  const { apiData: linkListResponse, execute: fetchLinkList } =
-    useAsync(getLinkList);
-  const linkList = linkListResponse?.data || [];
-
-  useEffect(() => {
-    fetchLinkList();
-  }, [fetchLinkList]);
-
+function FolderMainCards({ folderList, linkList }: FolderMainCardsProps) {
   return (
     <>
       {linkList.length === 0 ? (
@@ -66,13 +43,7 @@ function FolderMainCards({ currentFolder, folderList }: FolderMainCardsProps) {
       ) : (
         <ul className="cards">
           {linkList.map((item) => (
-            <FolderMainCard
-              key={item.id}
-              linkData={item}
-              target="_blank"
-              rel="noreferrer"
-              folderList={folderList}
-            />
+            <FolderMainCard key={item.id} linkData={item} target="_blank" rel="noreferrer" folderList={folderList} />
           ))}
         </ul>
       )}

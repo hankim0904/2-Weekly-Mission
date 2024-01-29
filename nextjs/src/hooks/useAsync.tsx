@@ -4,10 +4,13 @@ type UseAsyncReturnType<T> = {
   isLoading: boolean;
   error: Error | null;
   apiData: T;
-  execute: () => Promise<void>;
+  execute: () => Promise<T | undefined>;
 };
 
-function useAsync<T>(asyncFunction: () => Promise<T>): UseAsyncReturnType<T> {
+function useAsync<T extends () => Promise<void>>(
+  asyncFunction: () => Promise<T>,
+  lazyMode: boolean = false
+): UseAsyncReturnType<T> {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [apiData, setApiData] = useState<T>({} as T);
@@ -18,6 +21,7 @@ function useAsync<T>(asyncFunction: () => Promise<T>): UseAsyncReturnType<T> {
     try {
       const res = await asyncFunction();
       setApiData(res);
+      return res;
     } catch (err) {
       if (err instanceof Error) {
         setError(err);
@@ -28,8 +32,10 @@ function useAsync<T>(asyncFunction: () => Promise<T>): UseAsyncReturnType<T> {
   }, [asyncFunction]);
 
   useEffect(() => {
-    execute();
-  }, []);
+    if (!lazyMode) {
+      execute();
+    }
+  }, [lazyMode]);
 
   return { isLoading, error, apiData, execute };
 }

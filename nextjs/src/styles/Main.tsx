@@ -7,6 +7,7 @@ const flex = css`
 
 export const SharedMain = styled.main`
   padding: 4rem 0;
+  margin: 0 auto;
   display: grid;
   justify-content: center;
   align-items: center;

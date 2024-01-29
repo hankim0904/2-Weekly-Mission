@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import instance from '@/api/InterceptorManager';
 
 import FolderHeader from '@/components/FolderHeader';
 import FolderMain from '@/components/FolderMain';
 import Layout from '@/components/common/Layout';
-
-import instance from '@/api/InterceptorManager';
 
 function FolderPage() {
   const router = useRouter();
@@ -26,14 +25,14 @@ function FolderPage() {
     setFolderList(folderListData);
   };
 
-  const getLinkList = async () => {
-    const linkListResponse = await instance.get('/links');
+  const getLinkList = async (folderId: string) => {
+    const linkListResponse = await instance.get(`/links?folderId=${folderId}`);
     const linkListData = linkListResponse.data.data.folder;
     setLinkList(linkListData);
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken: string | null = localStorage.getItem('accessToken');
 
     if (!accessToken) {
       router.push('/signin');
@@ -43,7 +42,7 @@ function FolderPage() {
 
       getUserProfile();
       getFolderList();
-      getLinkList();
+      folderId && getLinkList(folderId as string);
     }
   }, [router]);
 

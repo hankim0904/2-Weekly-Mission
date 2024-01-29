@@ -11,63 +11,37 @@ const BaseButton = styled.button`
   border-radius: 8px;
   outline: none;
   border: none;
+  width: 100%;
 `;
 
-const LargeButton = styled(BaseButton)`
-  width: 280px;
-`;
-
-const MediumButton = styled(BaseButton)``;
-
-const SmallButton = styled(BaseButton)``;
-
-const DefaultButton = css`
+const StyledDefaultButton = styled(BaseButton)`
   background: linear-gradient(91deg, #6d6afe 0.12%, #6ae3fe 101.84%);
 `;
 
-const RemoveButton = css`
+const StyledRedButton = styled(BaseButton)`
   background-color: var(--red);
 `;
 
 interface ButtonProps {
   children: React.ReactNode;
-  variant: 'default' | 'remove';
-  size?: 'lg' | 'md' | 'sm';
+  colorVariant: 'default' | 'red';
 }
 
-function Button({ children, variant, size, ...props }: ButtonProps) {
-  let ButtonComponent = BaseButton;
+function Button({ children, colorVariant }: ButtonProps) {
+  let StyledComponent: any;
 
-  switch (size) {
-    case 'lg':
-      ButtonComponent = LargeButton;
-      break;
-    case 'md':
-      ButtonComponent = MediumButton;
-      break;
-    case 'sm':
-      ButtonComponent = SmallButton;
-      break;
-    default:
-      break;
-  }
-
-  switch (variant) {
+  switch (colorVariant) {
     case 'default':
-      ButtonComponent = styled(ButtonComponent)`
-        ${DefaultButton};
-      `;
+      StyledComponent = StyledDefaultButton;
       break;
-    case 'remove':
-      ButtonComponent = styled(ButtonComponent)`
-        ${RemoveButton};
-      `;
+    case 'red':
+      StyledComponent = StyledRedButton;
       break;
     default:
       break;
   }
 
-  return <ButtonComponent {...props}>{children}</ButtonComponent>;
+  return <StyledComponent>{children}</StyledComponent>;
 }
 
 export default Button;

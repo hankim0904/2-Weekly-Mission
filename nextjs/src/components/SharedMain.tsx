@@ -1,5 +1,7 @@
 import SharedMainCard from '@/components/SharedMainCard';
 import * as S from '@/styles/Main';
+import styled from 'styled-components';
+
 import { Link } from '@/types/SharedType';
 import Image from 'next/image';
 
@@ -18,14 +20,7 @@ function SharedMain({ links }: { links: Link[] }) {
       <MainSearchBox className="search" />
       <ul className="cards">
         {links.map((item) => {
-          return (
-            <SharedMainCard
-              key={item.id}
-              link={item}
-              target="_blank"
-              rel="noreferrer"
-            />
-          );
+          return <SharedMainCard key={item.id} link={item} target="_blank" rel="noreferrer" />;
         })}
       </ul>
     </S.SharedMain>

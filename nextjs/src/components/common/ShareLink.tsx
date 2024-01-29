@@ -5,6 +5,7 @@ const ShareList = styled.ul`
   display: flex;
   gap: 32px;
   list-style: none;
+  justify-content: center;
 `;
 
 const ShareListItem = styled.li`
@@ -54,7 +55,7 @@ function ShareLink() {
       </ShareListItem>
       <ShareListItem onClick={clipboard}>
         <ShareIcon>
-          <Image fill src="/images/share.svg" alt="링크복사 링크 이미지" />
+          <Image fill src="/images/linkcopy.svg" alt="링크복사 링크 이미지" />
         </ShareIcon>
         <ShareText>링크복사</ShareText>
       </ShareListItem>
