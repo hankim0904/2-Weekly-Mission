@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import instance from '@/api/InterceptorManager';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import instance from "@/api/axiosInstance";
 
-import FolderHeader from '@/components/FolderHeader';
-import FolderMain from '@/components/FolderMain';
-import Layout from '@/components/common/Layout';
+import FolderHeader from "@/components/FolderHeader";
+import FolderMain from "@/components/FolderMain";
+import Layout from "@/components/common/Layout";
 
 function FolderPage() {
   const router = useRouter();
   const [userProfile, setUserProfile] = useState({});
   const [folderList, setFolderList] = useState([]);
   const [linkList, setLinkList] = useState([]);
-  const [currentFolder, setCurrentFolder] = useState('');
+  const [currentFolder, setCurrentFolder] = useState("");
 
   const getUserProfile = async () => {
-    const userProfileResponse = await instance.get('/users');
+    const userProfileResponse = await instance.get("/users");
     const userProfileData = userProfileResponse.data.data[0];
     setUserProfile(userProfileData);
   };
@@ -32,10 +32,10 @@ function FolderPage() {
   };
 
   useEffect(() => {
-    const accessToken: string | null = localStorage.getItem('accessToken');
+    const accessToken: string | null = localStorage.getItem("accessToken");
 
     if (!accessToken) {
-      router.push('/signin');
+      router.push("/signin");
     } else {
       const { folderId } = router.query;
       folderId && setCurrentFolder(folderId as string);

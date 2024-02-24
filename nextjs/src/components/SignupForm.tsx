@@ -17,7 +17,9 @@ const SignupForm = () => {
     reValidateMode: 'onBlur',
   });
 
-  const { execute: checkEmailDuplicate } = useCheckEmailDuplicate(watch('email'));
+  const { execute: checkEmailDuplicate } = useCheckEmailDuplicate(
+    watch('email')
+  );
 
   const { execute: signUp, apiData } = useSignup({
     email: watch('email'),

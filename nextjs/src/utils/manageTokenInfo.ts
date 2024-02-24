@@ -1,5 +1,13 @@
 import { axiosInstance } from '@/api/axiosInstance';
-import { jwtDecode } from 'jwt-decode';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
+
+export const saveAccessToken = (accessToken: string) => {
+  localStorage.setItem('accessToken', accessToken);
+};
+
+export const saveRefreshToken = (refreshToken: string) => {
+  localStorage.setItem('refreshToken', refreshToken);
+};
 
 export const getToken = () => {
   return localStorage.getItem('accessToken');
@@ -12,9 +20,9 @@ export const isTokenExpired = () => {
   }
 
   try {
-    const decodedToken = jwtDecode(token);
+    const decodedToken: JwtPayload = jwtDecode(token);
 
-    const expirationTime = decodedToken.exp * 1000;
+    const expirationTime = decodedToken.exp! * 1000;
     return Date.now() >= expirationTime;
   } catch (error) {
     console.error('Error decoding token:', error);

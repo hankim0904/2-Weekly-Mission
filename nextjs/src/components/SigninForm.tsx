@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import useSignin from '@/hooks/useSignin';
 import { useTokenRedirect } from '@/hooks/useTokenRedirect';
 
 import Input from './common/Input';
@@ -9,18 +8,43 @@ import PasswordEyeButton from './common/PasswordEyeButton';
 import { SignForm } from '@/styles/SignForm';
 
 import { SIGN_ERROR_MESSAGE } from '@/stores/constants';
+import { useMutation } from '@tanstack/react-query';
+import { postSigninApi } from '@/api/apiCollection';
+import { EnteredSigninInfo } from '@/api/apiType';
+import { saveAccessToken, saveRefreshToken } from '@/utils/manageTokenInfo';
 
 const SigninForm = () => {
-  const { control, handleSubmit, watch, setError } = useForm({
+  const [accessToken, setAccessToken] = useState('');
+  const [refreshToken, setRefreshToken] = useState('');
+
+  const { control, handleSubmit, setError } = useForm({
     defaultValues: { email: '', password: '' },
     mode: 'onBlur',
   });
 
-  const { execute, error, apiData } = useSignin({
-    email: watch('email'),
-    password: watch('password'),
+  const {
+    data: tokens,
+    error,
+    mutateAsync,
+  } = useMutation({
+    mutationFn: (enteredSigninInfo: EnteredSigninInfo) =>
+      postSigninApi(enteredSigninInfo),
   });
-  useTokenRedirect(apiData?.data?.accessToken);
+
+  useTokenRedirect(tokens?.accessToken);
+
+  const postSignin = async (formValues: EnteredSigninInfo) => {
+    const tokens = await mutateAsync(formValues);
+    if (tokens?.accessToken) {
+      setAccessToken(tokens.accessToken);
+      setRefreshToken(tokens.refreshToken);
+    }
+  };
+
+  useEffect(() => {
+    saveAccessToken(accessToken);
+    saveRefreshToken(refreshToken);
+  }, [accessToken, refreshToken]);
 
   useEffect(() => {
     if (error) {
@@ -36,7 +60,7 @@ const SigninForm = () => {
   }, [error, setError]);
 
   return (
-    <SignForm onSubmit={handleSubmit(execute)}>
+    <SignForm onSubmit={handleSubmit(postSignin)}>
       <div className="sign-input">
         <div className="sign-input-element">
           <label>이메일</label>
