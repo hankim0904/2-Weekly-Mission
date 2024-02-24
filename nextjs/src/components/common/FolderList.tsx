@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { useQuery } from '@tanstack/react-query';
+import { getFolderListQueryKey } from '@/api/queryKeys';
+import { getFolderListApi } from '@/api/apiCollection';
 import { Folder } from '@/types/FolderType';
-import instance from '@/api/axiosInstanceWithToken';
 
 const AddFolderList = styled.ul`
   display: flex;
@@ -43,41 +44,37 @@ const LinkCount = styled.span`
   margin-left: 8px;
 `;
 
-interface FolderListProps {
-  folderList: Folder[];
-}
+const FolderList = () => {
+  const {
+    data: folderListData,
+    isError: isFolderListError,
+    isLoading: isFolderListLoading,
+  } = useQuery({
+    queryKey: getFolderListQueryKey(),
+    queryFn: () => getFolderListApi(),
+    staleTime: 1000 * 60 * 5,
+  });
 
-const FolderList = ({ folderList }: FolderListProps) => {
-  const [folderListItems, setFolderListItems] = useState<React.ReactNode[]>([]);
+  if (isFolderListLoading) {
+    return <div>Loading...</div>;
+  }
 
-  const getLinkList = async (folderId: number) => {
-    const endpoint = `/links?folderId=${folderId}`;
-    const linkListResponse = await instance.get(endpoint);
-    const linkListData = linkListResponse.data.data.folder;
-    return linkListData.length;
-  };
+  if (isFolderListError) {
+    return <div>Error!</div>;
+  }
 
-  const renderFolderList = async () => {
-    const items = await Promise.all(
-      folderList.map(async (item) => {
-        const linkCount = await getLinkList(item.id);
+  return (
+    <AddFolderList>
+      {folderListData.map((folder: Folder) => {
         return (
-          <AddFolderListItem key={item.id}>
-            <FolderName>{item.name}</FolderName>
-            <LinkCount>{linkCount}개 링크</LinkCount>
+          <AddFolderListItem key={folder.id}>
+            <FolderName>{folder.name}</FolderName>
+            <LinkCount>{folder.link_count}개 링크</LinkCount>
           </AddFolderListItem>
         );
-      })
-    );
-
-    setFolderListItems(items);
-  };
-
-  useEffect(() => {
-    renderFolderList();
-  }, []);
-
-  return <AddFolderList>{folderListItems}</AddFolderList>;
+      })}
+    </AddFolderList>
+  );
 };
 
 export default FolderList;

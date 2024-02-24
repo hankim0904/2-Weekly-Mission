@@ -7,9 +7,8 @@ export interface Folder {
   created_at: string;
   favorite: boolean;
   id: number;
-  link: { count: number };
+  link_count: number;
   name: string;
-  user_id: number;
 }
 
 export interface Link {

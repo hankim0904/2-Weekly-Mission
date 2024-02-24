@@ -1,32 +1,42 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
+import { useQuery } from '@tanstack/react-query';
+import { getFolderListQueryKey } from '@/api/queryKeys';
+import { getFolderListApi } from '@/api/apiCollection';
+
 import * as S from '@/styles/Main';
 import classNames from 'classnames';
+import Image from 'next/image';
 
 import FolderMainCards from '@/components/FolderMainCards';
 import Modal from '@/components/common/Modal';
 import ModalSearch from '@/components/common/ModalSearch';
 import Button from '@/components/common/Button';
 import ShareLink from '@/components/common/ShareLink';
-
 import { Folder, LinkListItem } from '@/types/FolderType';
 
-import Image from 'next/image';
-
 interface FolderMainProps {
-  folderList: Folder[];
   currentFolder: string;
-  linkList: LinkListItem[];
 }
 
-function FolderMain({ folderList, linkList, currentFolder }: FolderMainProps) {
+function FolderMain({ currentFolder }: FolderMainProps) {
   const router = useRouter();
   const [currentFolderName, setCurrentFolderName] = useState('');
   const [isAddModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState<boolean>(false);
+
+  const {
+    data: folderListData,
+    isError: isFolderListError,
+    isLoading: isFolderListLoading,
+  } = useQuery({
+    queryKey: getFolderListQueryKey(),
+    queryFn: () => getFolderListApi(),
+    staleTime: 1000 * 60 * 5,
+  });
 
   const handleFolderClick = (folderId: string | number) => {
     router.push(`/folder/${folderId}`);
@@ -54,9 +64,19 @@ function FolderMain({ folderList, linkList, currentFolder }: FolderMainProps) {
   };
 
   useEffect(() => {
-    const folderName = folderList.find((folder) => String(folder.id) === currentFolder)?.name;
+    const folderName = folderListData.find(
+      (folder: Folder) => String(folder.id) === currentFolder
+    )?.name;
     folderName && setCurrentFolderName(folderName);
-  }, [currentFolder, folderList]);
+  }, [currentFolder, folderListData]);
+
+  if (isFolderListLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isFolderListError) {
+    return <div>Error!</div>;
+  }
 
   return (
     <S.Main>
@@ -73,33 +93,45 @@ function FolderMain({ folderList, linkList, currentFolder }: FolderMainProps) {
               handleFolderClick('');
             }}
           >
-            <button className={classNames({ focused: !currentFolder })}>전체</button>
+            <button className={classNames({ focused: !currentFolder })}>
+              전체
+            </button>
           </li>
-          {folderList?.map((item) => {
+          {folderListData?.map((folder: Folder) => {
             return (
               <li
-                key={item.id}
+                key={folder.id}
                 onClick={() => {
-                  handleFolderClick(item.id);
+                  handleFolderClick(folder.id);
                 }}
               >
                 <button
                   className={classNames({
-                    focused: currentFolder === String(item.id),
+                    focused: currentFolder === String(folder.id),
                   })}
                 >
-                  {item.name}
+                  {folder.name}
                 </button>
               </li>
             );
           })}
         </ul>
         <button className="add" onClick={handleAddModal}>
-          <Image src="/images/add.svg" width={16} height={16} alt="폴더 추가 아이콘" />
+          <Image
+            src="/images/add.svg"
+            width={16}
+            height={16}
+            alt="폴더 추가 아이콘"
+          />
         </button>
         <button className="add-mobile" onClick={handleAddModal}>
           폴더 추가
-          <Image src="/images/add_white.svg" width={16} height={16} alt="폴더 추가 아이콘 흰색" />
+          <Image
+            src="/images/add_white.svg"
+            width={16}
+            height={16}
+            alt="폴더 추가 아이콘 흰색"
+          />
         </button>
       </S.Folder>
       <S.Title>
@@ -107,21 +139,36 @@ function FolderMain({ folderList, linkList, currentFolder }: FolderMainProps) {
         {currentFolder && (
           <div>
             <button onClick={handleShareModal}>
-              <Image src="/images/share.svg" width={18} height={18} alt="공유 아이콘" />
+              <Image
+                src="/images/share.svg"
+                width={18}
+                height={18}
+                alt="공유 아이콘"
+              />
               <span>공유</span>
             </button>
             <button onClick={handleEditModal}>
-              <Image src="/images/pen.svg" width={18} height={18} alt="이름변경 아이콘" />
+              <Image
+                src="/images/pen.svg"
+                width={18}
+                height={18}
+                alt="이름변경 아이콘"
+              />
               <span>이름 변경</span>
             </button>
             <button onClick={handleRemoveModal}>
-              <Image src="/images/bin.svg" width={18} height={18} alt="삭제 아이콘" />
+              <Image
+                src="/images/bin.svg"
+                width={18}
+                height={18}
+                alt="삭제 아이콘"
+              />
               <span>삭제</span>
             </button>
           </div>
         )}
       </S.Title>
-      <FolderMainCards folderList={folderList} linkList={linkList} />
+      <FolderMainCards folderList={folderListData} />
 
       {isAddModalOpen && (
         <Modal modalTitle="폴더 추가" onClose={handleCloseModal}>
@@ -133,7 +180,11 @@ function FolderMain({ folderList, linkList, currentFolder }: FolderMainProps) {
       )}
 
       {isShareModalOpen && (
-        <Modal modalTitle="폴더 공유" subTitle={currentFolderName} onClose={handleCloseModal}>
+        <Modal
+          modalTitle="폴더 공유"
+          subTitle={currentFolderName}
+          onClose={handleCloseModal}
+        >
           <div className="modal-content">
             <ShareLink />
           </div>
@@ -150,7 +201,11 @@ function FolderMain({ folderList, linkList, currentFolder }: FolderMainProps) {
       )}
 
       {isRemoveModalOpen && (
-        <Modal modalTitle="폴더 삭제" subTitle={currentFolderName} onClose={handleCloseModal}>
+        <Modal
+          modalTitle="폴더 삭제"
+          subTitle={currentFolderName}
+          onClose={handleCloseModal}
+        >
           <div className="modal-content">
             <Button colorVariant="red">삭제하기</Button>
           </div>

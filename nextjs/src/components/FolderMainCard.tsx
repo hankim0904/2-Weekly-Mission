@@ -48,10 +48,9 @@ interface FolderMainCardProps {
   linkData: LinkListItem;
   target: string;
   rel: string;
-  folderList: Folder[];
 }
 
-function FolderMainCard({ linkData, target, rel, folderList }: FolderMainCardProps) {
+function FolderMainCard({ linkData, target, rel }: FolderMainCardProps) {
   const { created_at, url, title, description, image_source } = linkData;
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -76,9 +75,17 @@ function FolderMainCard({ linkData, target, rel, folderList }: FolderMainCardPro
   };
 
   return (
-    <StyledFolderMainCard className="card" onClick={() => setIsSelectMenuOpen(false)}>
+    <StyledFolderMainCard
+      className="card"
+      onClick={() => setIsSelectMenuOpen(false)}
+    >
       <button className="star-button">
-        <Image src="/images/star.svg" width={34} height={34} alt="별모양 버튼" />
+        <Image
+          src="/images/star.svg"
+          width={34}
+          height={34}
+          alt="별모양 버튼"
+        />
       </button>
 
       <a href={url} target={target} rel={rel}>
@@ -88,7 +95,12 @@ function FolderMainCard({ linkData, target, rel, folderList }: FolderMainCardPro
           </div>
         ) : (
           <div className="card-img-default">
-            <Image src="/images/logo.svg" width={133} height={24} alt="기본 이미지" />
+            <Image
+              src="/images/logo.svg"
+              width={133}
+              height={24}
+              alt="기본 이미지"
+            />
           </div>
         )}
       </a>
@@ -98,7 +110,12 @@ function FolderMainCard({ linkData, target, rel, folderList }: FolderMainCardPro
           <span className="card-ago">{countAgo(created_at)}</span>
           <div>
             <button className="kebab-button" onClick={handleToggleMenu}>
-              <Image src="/images/kebab.svg" width={21} height={17} alt="케밥 버튼" />
+              <Image
+                src="/images/kebab.svg"
+                width={21}
+                height={17}
+                alt="케밥 버튼"
+              />
             </button>
 
             {isSelectMenuOpen && (
@@ -130,9 +147,13 @@ function FolderMainCard({ linkData, target, rel, folderList }: FolderMainCardPro
       )}
 
       {isAddModalOpen && (
-        <Modal modalTitle="폴더에 추가" subTitle={url} onClose={handleCloseModal}>
+        <Modal
+          modalTitle="폴더에 추가"
+          subTitle={url}
+          onClose={handleCloseModal}
+        >
           <div className="modal-content">
-            <FolderList folderList={folderList} />
+            <FolderList />
             <Button colorVariant="default">추가하기</Button>
           </div>
         </Modal>

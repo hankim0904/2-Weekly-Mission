@@ -100,6 +100,8 @@ interface NavigationProps {
 }
 
 function Navigation({ userProfile, isSticky = true }: NavigationProps) {
+  const { image_source, email } = userProfile;
+
   return (
     <Nav $isSticky={isSticky}>
       <div className="gnb">
@@ -114,16 +116,16 @@ function Navigation({ userProfile, isSticky = true }: NavigationProps) {
         </Link>
         {userProfile ? (
           <div className="cta profile">
-            {userProfile.image_source && (
+            {image_source && (
               <img
                 className="profile-logo"
-                src={userProfile.image_source}
+                src={image_source}
                 width={28}
                 height={28}
                 alt="프로필 로고"
               />
             )}
-            <span className="profile-email">{userProfile.email}</span>
+            <span className="profile-email">{email}</span>
           </div>
         ) : (
           <button className="cta login" type="button">

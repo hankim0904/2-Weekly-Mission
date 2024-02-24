@@ -8,12 +8,12 @@ import {
 } from '@tanstack/react-query';
 import {
   getFolderQueryKey,
-  getLinkQueryKey,
+  getLinkListQueryKey,
   getUserQueryKey,
 } from '@/api/queryKeys';
 import {
   getFolderApi,
-  getLinkApi,
+  getLinkListApi,
   getSignedUserApi,
 } from '@/api/apiCollection';
 
@@ -37,8 +37,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   });
 
   await queryClient.prefetchQuery({
-    queryKey: getLinkQueryKey(folderId),
-    queryFn: () => getLinkApi(folderId),
+    queryKey: getLinkListQueryKey(folderId),
+    queryFn: () => getLinkListApi(folderId),
   });
 
   return {

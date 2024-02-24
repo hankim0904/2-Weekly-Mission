@@ -1,3 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
+import { getWholeLinkListQueryKey } from '@/api/queryKeys';
+import { getWholeLinkListApi } from '@/api/apiCollection';
+
 import styled from 'styled-components';
 import FolderMainCard from '@/components/FolderMainCard';
 
@@ -28,22 +32,40 @@ const StyledNolink = styled.div`
   }
 `;
 
-interface FolderMainCardsProps {
-  folderList: Folder[];
-  linkList: LinkListItem[];
-}
+function FolderMainCards() {
+  const {
+    data: linkListData,
+    isError: isLinkListError,
+    isLoading: isLinkListLoading,
+  } = useQuery({
+    queryKey: getWholeLinkListQueryKey(),
+    queryFn: () => getWholeLinkListApi(),
+    staleTime: 1000 * 60 * 5,
+  });
 
-function FolderMainCards({ folderList, linkList }: FolderMainCardsProps) {
+  if (isLinkListLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isLinkListError) {
+    return <div>Error!</div>;
+  }
+
   return (
     <>
-      {linkList.length === 0 ? (
+      {linkListData.length === 0 ? (
         <StyledNolink>
           <p>저장된 링크가 없습니다</p>
         </StyledNolink>
       ) : (
         <ul className="cards">
-          {linkList.map((item) => (
-            <FolderMainCard key={item.id} linkData={item} target="_blank" rel="noreferrer" folderList={folderList} />
+          {linkListData.map((item: LinkListItem) => (
+            <FolderMainCard
+              key={item.id}
+              linkData={item}
+              target="_blank"
+              rel="noreferrer"
+            />
           ))}
         </ul>
       )}

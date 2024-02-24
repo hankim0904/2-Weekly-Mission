@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
-import { getLinkQueryKey } from '@/api/queryKeys';
-import { getLinkApi } from '@/api/apiCollection';
+import { getLinkListQueryKey } from '@/api/queryKeys';
+import { getLinkListApi } from '@/api/apiCollection';
 
 import SharedMainCard from '@/components/SharedMainCard';
 import * as S from '@/styles/Main';
@@ -27,8 +27,9 @@ function SharedMain() {
     isError: isLinkError,
     isLoading: isLinkLoading,
   } = useQuery({
-    queryKey: getLinkQueryKey(folderId),
-    queryFn: () => getLinkApi(folderId),
+    queryKey: getLinkListQueryKey(folderId),
+    queryFn: () => getLinkListApi(folderId),
+    staleTime: 1000 * 60 * 5,
   });
 
   if (isLinkLoading) {
@@ -38,7 +39,7 @@ function SharedMain() {
   if (isLinkError) {
     return <div>Error!</div>;
   }
-  console.log(linkData);
+
   return (
     <S.SharedMain>
       <MainSearchBox className="search" />

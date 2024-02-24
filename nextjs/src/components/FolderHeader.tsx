@@ -4,7 +4,6 @@ import FolderList from '@/components/common/FolderList';
 import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
 
-import { Folder } from '@/types/FolderType';
 import Image from 'next/image';
 
 const flex = `
@@ -99,11 +98,7 @@ const StyledFolderHeader = styled.header`
   }
 `;
 
-interface FolderListProps {
-  folderList: Folder[];
-}
-
-function FolderHeader({ folderList }: FolderListProps) {
+function FolderHeader() {
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [inputUrl, setInputUrl] = useState<string>('');
 
@@ -128,16 +123,23 @@ function FolderHeader({ folderList }: FolderListProps) {
             <Image fill src="/images/link.svg" alt="첨부 아이콘" />
           </div>
         </button>
-        <input placeholder="링크를 추가해 보세요." onChange={handleInputUrlChange} />
+        <input
+          placeholder="링크를 추가해 보세요."
+          onChange={handleInputUrlChange}
+        />
         <button className="link-cta" onClick={handleAddModal}>
           추가하기
         </button>
       </form>
 
       {isAddModalOpen && (
-        <Modal modalTitle="폴더에 추가" subTitle={inputUrl} onClose={handleCloseModal}>
+        <Modal
+          modalTitle="폴더에 추가"
+          subTitle={inputUrl}
+          onClose={handleCloseModal}
+        >
           <div className="modal-content">
-            <FolderList folderList={folderList} />
+            <FolderList />
             <Button colorVariant="default">추가하기</Button>
           </div>
         </Modal>
