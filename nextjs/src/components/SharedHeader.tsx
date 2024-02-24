@@ -1,6 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
+import { useRouter } from 'next/router';
+
+import { useQuery } from '@tanstack/react-query';
+import { getFolderQueryKey, getUserQueryKey } from '@/api/queryKeys';
+import { getFolderApi, getSignedUserApi } from '@/api/apiCollection';
+
 import styled from 'styled-components';
-import Image from 'next/image';
-import { UserProfile } from '@/types/FolderType';
 
 const flex = `
   display: flex;
@@ -65,23 +70,50 @@ const StyledSharedHeader = styled.header`
   }
 `;
 
-interface SharedHeaderProps {
-  folderName: string;
-  userProfile: UserProfile;
-}
+function SharedHeader() {
+  const router = useRouter();
+  const folderId = router.query['folderId'];
 
-function SharedHeader({ folderName, userProfile }: SharedHeaderProps) {
-  const { name, image_source } = userProfile;
+  const {
+    data: folderData,
+    isError: isFolderError,
+    isLoading: isFolderLoading,
+  } = useQuery({
+    queryKey: getFolderQueryKey(folderId),
+    queryFn: () => getFolderApi(folderId),
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const {
+    data: userData,
+    isError: isUserError,
+    isLoading: isUserLoading,
+  } = useQuery({
+    queryKey: getUserQueryKey(),
+    queryFn: () => getSignedUserApi(),
+    staleTime: 1000 * 60 * 60,
+  });
+
+  if (isFolderLoading || isUserLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isFolderError || isUserError) {
+    return <div>Error!</div>;
+  }
+
+  const folder = folderData[0];
+  const user = userData[0];
 
   return (
     <StyledSharedHeader>
       <div className="folder-owner">
         <div className="owner-img">
-          <Image fill className="owner-img" src={image_source} alt={name} />
+          <img className="owner-img" src={user.image_source} alt={user.name} />
         </div>
-        <span className="owner-name">@{name}</span>
+        <span className="owner-name">@{user.name}</span>
       </div>
-      <h1 className="folder-name">{folderName}</h1>
+      <h1 className="folder-name">{folder.name}</h1>
     </StyledSharedHeader>
   );
 }

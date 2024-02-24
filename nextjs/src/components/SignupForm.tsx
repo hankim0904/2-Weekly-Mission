@@ -9,7 +9,7 @@ import { SignForm } from '@/styles/SignForm';
 import { SIGN_ERROR_MESSAGE } from '@/stores/constants';
 import { useMutation } from '@tanstack/react-query';
 import { postCheckEmailDuplicateApi, postSignupApi } from '@/api/apiCollection';
-import { EnteredEmail, EnteredSignInfo } from '@/api/apiType';
+import { EnteredEmail, EnteredSignInfo } from '@/types/apiType';
 import { useEffect, useState } from 'react';
 import { saveAccessToken, saveRefreshToken } from '@/utils/manageTokenInfo';
 

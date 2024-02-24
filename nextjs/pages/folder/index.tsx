@@ -6,6 +6,7 @@ import FolderMain from '@/components/FolderMain';
 import Layout from '@/components/common/Layout';
 
 import instance from '@/api/axiosInstanceWithToken';
+import { getCookie } from '@/utils/manageTokenInfo';
 
 function FolderPage() {
   const router = useRouter();
@@ -33,7 +34,7 @@ function FolderPage() {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = getCookie('accessToken');
 
     if (!accessToken) {
       router.push('/signin');

@@ -1,3 +1,4 @@
+import { getCookie } from '@/utils/manageTokenInfo';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -8,9 +9,9 @@ export const useTokenRedirect = (tokenResponse?: string) => {
     const routeToFolderPage = () => {
       router.replace('/folder');
     };
-    const accessTokenInLocalStorage = localStorage.getItem('accessToken');
+    const accessTokenInCookie = getCookie('accessToken');
 
-    if (tokenResponse || accessTokenInLocalStorage) {
+    if (tokenResponse || accessTokenInCookie) {
       routeToFolderPage();
     }
   }, [tokenResponse, router]);

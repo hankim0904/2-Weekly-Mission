@@ -2,19 +2,25 @@ import { axiosInstance } from '@/api/axiosInstance';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 export const saveAccessToken = (accessToken: string) => {
-  localStorage.setItem('accessToken', accessToken);
+  document.cookie = `accessToken=${accessToken}; path=/; max-age=${
+    7 * 24 * 60 * 60
+  }`;
 };
 
 export const saveRefreshToken = (refreshToken: string) => {
-  localStorage.setItem('refreshToken', refreshToken);
+  document.cookie = `refreshToken=${refreshToken}; path=/; max-age=${
+    30 * 24 * 60 * 60
+  }`;
 };
 
-export const getToken = () => {
-  return localStorage.getItem('accessToken');
+export const getCookie = (name: string) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
 };
 
 export const isTokenExpired = () => {
-  const token = getToken();
+  const token = getCookie('accessToken');
   if (!token) {
     return true;
   }
@@ -33,10 +39,10 @@ export const isTokenExpired = () => {
 export const tokenRefresh = async () => {
   try {
     const response = await axiosInstance.post('/refresh-token', {
-      refreshToken: localStorage.getItem('refreshToken'),
+      refreshToken: getCookie('refreshToken'),
     });
 
-    localStorage.setItem('accessToken', response.data.accessToken);
+    saveAccessToken(response.data.accessToken);
   } catch (error) {
     console.error('Token refresh failed:', error);
   }

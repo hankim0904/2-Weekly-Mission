@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  getToken,
+  getCookie,
   isTokenExpired,
   tokenRefresh,
 } from '@/utils/manageTokenInfo';
@@ -11,7 +11,7 @@ export const axiosInstanceWithToken = axios.create({
 
 axiosInstanceWithToken.interceptors.request.use(
   (config) => {
-    const accessToken = getToken();
+    const accessToken = getCookie('accessToken');
 
     config.headers['Content-Type'] = 'application/json';
     config.headers['Authorization'] = `Bearer ${accessToken}`;
@@ -36,7 +36,7 @@ axiosInstanceWithToken.interceptors.response.use(
     if (error.response?.status === 401) {
       if (isTokenExpired()) await tokenRefresh();
 
-      const accessToken = getToken();
+      const accessToken = getCookie('accessToken');
 
       error.config.headers = {
         'Content-Type': 'application/json',

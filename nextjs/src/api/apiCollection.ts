@@ -1,5 +1,6 @@
-import { EnteredEmail, EnteredSignInfo } from './apiType';
+import { EnteredEmail, EnteredSignInfo } from '../types/apiType';
 import { axiosInstance } from './axiosInstance';
+import { axiosInstanceWithToken } from './axiosInstanceWithToken';
 
 export const postSigninApi = async (enteredSigninInfo: EnteredSignInfo) => {
   const response = await axiosInstance.post('/auth/sign-in', enteredSigninInfo);
@@ -17,6 +18,28 @@ export const postCheckEmailDuplicateApi = async (
   enteredEmail: EnteredEmail
 ) => {
   const response = await axiosInstance.post('/users/check-email', enteredEmail);
+
+  return response.data;
+};
+
+export const getFolderApi = async (folderId: string | string[] | undefined) => {
+  const response = await axiosInstance.get(`/folders/${folderId}`);
+
+  return response.data;
+};
+
+export const getSignedUserApi = async (accessToken?: string | undefined) => {
+  const response = accessToken
+    ? await axiosInstance.get(`/users`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+    : await axiosInstanceWithToken.get(`/users`);
+
+  return response.data;
+};
+
+export const getLinkApi = async (folderId: string | string[] | undefined) => {
+  const response = await axiosInstance.get(`/folders/${folderId}/links`);
 
   return response.data;
 };

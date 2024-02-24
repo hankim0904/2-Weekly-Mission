@@ -10,7 +10,7 @@ import { SignForm } from '@/styles/SignForm';
 import { SIGN_ERROR_MESSAGE } from '@/stores/constants';
 import { useMutation } from '@tanstack/react-query';
 import { postSigninApi } from '@/api/apiCollection';
-import { EnteredSignInfo } from '@/api/apiType';
+import { EnteredSignInfo } from '@/types/apiType';
 import { saveAccessToken, saveRefreshToken } from '@/utils/manageTokenInfo';
 
 const SigninForm = () => {
