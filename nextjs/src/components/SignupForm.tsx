@@ -8,18 +8,21 @@ import { SignForm } from '@/styles/SignForm';
 
 import { SIGN_ERROR_MESSAGE } from '@/stores/constants';
 import useSignup from '@/hooks/useSignup';
-import { useCheckEmailDuplicate } from '@/hooks/useCheckEmailDuplicate';
+import { useMutation } from '@tanstack/react-query';
+import { postCheckEmailDuplicateApi } from '@/api/apiCollection';
+import { EnteredEmail } from '@/api/apiType';
 
 const SignupForm = () => {
-  const { control, handleSubmit, watch, setError } = useForm({
+  const { control, handleSubmit, watch } = useForm({
     defaultValues: { email: '', password: '', confirmedPassword: '' },
     mode: 'onBlur',
     reValidateMode: 'onBlur',
   });
 
-  const { execute: checkEmailDuplicate } = useCheckEmailDuplicate(
-    watch('email')
-  );
+  const { mutateAsync: mutateAsyncForDuplicateEmail } = useMutation({
+    mutationFn: (enteredEmail: EnteredEmail) =>
+      postCheckEmailDuplicateApi(enteredEmail),
+  });
 
   const { execute: signUp, apiData } = useSignup({
     email: watch('email'),
@@ -42,9 +45,13 @@ const SignupForm = () => {
                 message: SIGN_ERROR_MESSAGE.checkFormEmail,
               },
               validate: {
-                alreadyExist: async () => {
-                  const response = await checkEmailDuplicate();
-                  if (!response?.data?.isUsableNickname) {
+                alreadyExist: async (value) => {
+                  const enteredEmail = { email: value };
+                  const response = await mutateAsyncForDuplicateEmail(
+                    enteredEmail
+                  );
+                  console.log(response);
+                  if (!response?.isUsableEmail) {
                     return SIGN_ERROR_MESSAGE.takenEmail;
                   }
                   return true;

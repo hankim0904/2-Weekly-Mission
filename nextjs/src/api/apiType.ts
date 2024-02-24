@@ -1,4 +1,7 @@
-export interface EnteredSigninInfo {
+export interface EnteredEmail {
   email: string;
+}
+
+export interface EnteredSigninInfo extends EnteredEmail {
   password: string;
 }

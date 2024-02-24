@@ -1,4 +1,4 @@
-import { axiosInstance } from '@/api/axiosInstance';
+import { axiosInstance } from '@/api/axiosInstanceWithToken';
 import { GetServerSidePropsContext } from 'next';
 
 import SharedHeader from '@/components/SharedHeader';
@@ -22,7 +22,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const userResponse = await axiosInstance.get('/users/1');
   const userProfile = userResponse.data.data[0];
 
-  const linkResponse = await axiosInstance.get(`/users/1/links?folderId=${folderId}`);
+  const linkResponse = await axiosInstance.get(
+    `/users/1/links?folderId=${folderId}`
+  );
   const links = linkResponse.data.data;
 
   return {

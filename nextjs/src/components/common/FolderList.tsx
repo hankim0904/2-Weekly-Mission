@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
-import { Folder } from "@/types/FolderType";
-import instance from "@/api/axiosInstance";
+import { Folder } from '@/types/FolderType';
+import instance from '@/api/axiosInstanceWithToken';
 
 const AddFolderList = styled.ul`
   display: flex;

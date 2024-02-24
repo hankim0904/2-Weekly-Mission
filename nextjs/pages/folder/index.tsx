@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
-import FolderHeader from "@/components/FolderHeader";
-import FolderMain from "@/components/FolderMain";
-import Layout from "@/components/common/Layout";
+import FolderHeader from '@/components/FolderHeader';
+import FolderMain from '@/components/FolderMain';
+import Layout from '@/components/common/Layout';
 
-import instance from "@/api/axiosInstance";
+import instance from '@/api/axiosInstanceWithToken';
 
 function FolderPage() {
   const router = useRouter();
   const [userProfile, setUserProfile] = useState({});
   const [folderList, setFolderList] = useState([]);
   const [linkList, setLinkList] = useState([]);
-  const [currentFolder, setCurrentFolder] = useState("");
+  const [currentFolder, setCurrentFolder] = useState('');
 
   const getUserProfile = async () => {
-    const userProfileResponse = await instance.get("/users");
+    const userProfileResponse = await instance.get('/users');
     const userProfileData = userProfileResponse.data.data[0];
     setUserProfile(userProfileData);
   };
@@ -27,16 +27,16 @@ function FolderPage() {
   };
 
   const getLinkList = async () => {
-    const linkListResponse = await instance.get("/links");
+    const linkListResponse = await instance.get('/links');
     const linkListData = linkListResponse.data.data.folder;
     setLinkList(linkListData);
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem('accessToken');
 
     if (!accessToken) {
-      router.push("/signin");
+      router.push('/signin');
     } else {
       const { folderId } = router.query;
       folderId && setCurrentFolder(folderId as string);
@@ -50,7 +50,11 @@ function FolderPage() {
   return (
     <Layout userProfile={userProfile} isSticky={false}>
       <FolderHeader folderList={folderList} />
-      <FolderMain folderList={folderList} linkList={linkList} currentFolder={currentFolder} />
+      <FolderMain
+        folderList={folderList}
+        linkList={linkList}
+        currentFolder={currentFolder}
+      />
     </Layout>
   );
 }

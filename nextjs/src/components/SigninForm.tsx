@@ -24,8 +24,8 @@ const SigninForm = () => {
 
   const {
     data: tokens,
-    error,
-    mutateAsync,
+    error: signinSubmitError,
+    mutateAsync: mutateAsyncForToken,
   } = useMutation({
     mutationFn: (enteredSigninInfo: EnteredSigninInfo) =>
       postSigninApi(enteredSigninInfo),
@@ -33,8 +33,8 @@ const SigninForm = () => {
 
   useTokenRedirect(tokens?.accessToken);
 
-  const postSignin = async (formValues: EnteredSigninInfo) => {
-    const tokens = await mutateAsync(formValues);
+  const postSignin = async (enteredSigninInfo: EnteredSigninInfo) => {
+    const tokens = await mutateAsyncForToken(enteredSigninInfo);
     if (tokens?.accessToken) {
       setAccessToken(tokens.accessToken);
       setRefreshToken(tokens.refreshToken);
@@ -47,7 +47,7 @@ const SigninForm = () => {
   }, [accessToken, refreshToken]);
 
   useEffect(() => {
-    if (error) {
+    if (signinSubmitError) {
       setError('email', {
         type: 'invalid',
         message: SIGN_ERROR_MESSAGE.wrongEmail,
@@ -57,7 +57,7 @@ const SigninForm = () => {
         message: SIGN_ERROR_MESSAGE.wrongPassword,
       });
     }
-  }, [error, setError]);
+  }, [signinSubmitError, setError]);
 
   return (
     <SignForm onSubmit={handleSubmit(postSignin)}>
