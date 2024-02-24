@@ -10,12 +10,7 @@ export const useTokenRedirect = (tokenResponse?: string) => {
     };
     const accessTokenInLocalStorage = localStorage.getItem('accessToken');
 
-    if (tokenResponse) {
-      routeToFolderPage();
-      return;
-    }
-
-    if (accessTokenInLocalStorage) {
+    if (tokenResponse || accessTokenInLocalStorage) {
       routeToFolderPage();
     }
   }, [tokenResponse, router]);

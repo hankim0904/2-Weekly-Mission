@@ -2,6 +2,6 @@ export interface EnteredEmail {
   email: string;
 }
 
-export interface EnteredSigninInfo extends EnteredEmail {
+export interface EnteredSignInfo extends EnteredEmail {
   password: string;
 }

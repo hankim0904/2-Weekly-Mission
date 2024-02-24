@@ -10,7 +10,7 @@ import { SignForm } from '@/styles/SignForm';
 import { SIGN_ERROR_MESSAGE } from '@/stores/constants';
 import { useMutation } from '@tanstack/react-query';
 import { postSigninApi } from '@/api/apiCollection';
-import { EnteredSigninInfo } from '@/api/apiType';
+import { EnteredSignInfo } from '@/api/apiType';
 import { saveAccessToken, saveRefreshToken } from '@/utils/manageTokenInfo';
 
 const SigninForm = () => {
@@ -22,28 +22,31 @@ const SigninForm = () => {
     mode: 'onBlur',
   });
 
-  const {
-    data: tokens,
-    error: signinSubmitError,
-    mutateAsync: mutateAsyncForToken,
-  } = useMutation({
-    mutationFn: (enteredSigninInfo: EnteredSigninInfo) =>
-      postSigninApi(enteredSigninInfo),
-  });
+  const { error: signinSubmitError, mutateAsync: mutateAsyncForToken } =
+    useMutation({
+      mutationFn: (enteredSigninInfo: EnteredSignInfo) =>
+        postSigninApi(enteredSigninInfo),
+    });
 
-  useTokenRedirect(tokens?.accessToken);
+  useTokenRedirect(accessToken);
 
-  const postSignin = async (enteredSigninInfo: EnteredSigninInfo) => {
-    const tokens = await mutateAsyncForToken(enteredSigninInfo);
-    if (tokens?.accessToken) {
-      setAccessToken(tokens.accessToken);
-      setRefreshToken(tokens.refreshToken);
+  const postSignin = async (enteredSigninInfo: EnteredSignInfo) => {
+    try {
+      const tokens = await mutateAsyncForToken(enteredSigninInfo);
+      if (tokens?.accessToken) {
+        setAccessToken(tokens.accessToken);
+        setRefreshToken(tokens.refreshToken);
+      }
+    } catch (error) {
+      console.error('Error while signing in:', error);
     }
   };
 
   useEffect(() => {
-    saveAccessToken(accessToken);
-    saveRefreshToken(refreshToken);
+    if (accessToken) {
+      saveAccessToken(accessToken);
+      saveRefreshToken(refreshToken);
+    }
   }, [accessToken, refreshToken]);
 
   useEffect(() => {

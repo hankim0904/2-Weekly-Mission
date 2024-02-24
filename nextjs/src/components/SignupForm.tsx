@@ -7,12 +7,16 @@ import PasswordEyeButton from './common/PasswordEyeButton';
 import { SignForm } from '@/styles/SignForm';
 
 import { SIGN_ERROR_MESSAGE } from '@/stores/constants';
-import useSignup from '@/hooks/useSignup';
 import { useMutation } from '@tanstack/react-query';
-import { postCheckEmailDuplicateApi } from '@/api/apiCollection';
-import { EnteredEmail } from '@/api/apiType';
+import { postCheckEmailDuplicateApi, postSignupApi } from '@/api/apiCollection';
+import { EnteredEmail, EnteredSignInfo } from '@/api/apiType';
+import { useEffect, useState } from 'react';
+import { saveAccessToken, saveRefreshToken } from '@/utils/manageTokenInfo';
 
 const SignupForm = () => {
+  const [accessToken, setAccessToken] = useState('');
+  const [refreshToken, setRefreshToken] = useState('');
+
   const { control, handleSubmit, watch } = useForm({
     defaultValues: { email: '', password: '', confirmedPassword: '' },
     mode: 'onBlur',
@@ -24,14 +28,34 @@ const SignupForm = () => {
       postCheckEmailDuplicateApi(enteredEmail),
   });
 
-  const { execute: signUp, apiData } = useSignup({
-    email: watch('email'),
-    password: watch('password'),
+  const { mutateAsync: mutateAsyncForToken } = useMutation({
+    mutationFn: (enteredSignupInfo: EnteredSignInfo) =>
+      postSignupApi(enteredSignupInfo),
   });
-  useTokenRedirect(apiData?.data?.accessToken);
+
+  useTokenRedirect(accessToken);
+
+  const postSignup = async (enteredSignupInfo: EnteredSignInfo) => {
+    try {
+      const tokens = await mutateAsyncForToken(enteredSignupInfo);
+      if (tokens?.accessToken) {
+        setAccessToken(tokens.accessToken);
+        setRefreshToken(tokens.refreshToken);
+      }
+    } catch (error) {
+      console.error('Error while signing up:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (accessToken) {
+      saveAccessToken(accessToken);
+      saveRefreshToken(refreshToken);
+    }
+  }, [accessToken, refreshToken]);
 
   return (
-    <SignForm onSubmit={handleSubmit(signUp)}>
+    <SignForm onSubmit={handleSubmit(postSignup)}>
       <div className="sign-input">
         <div className="sign-input-element">
           <label>이메일</label>
@@ -47,14 +71,16 @@ const SignupForm = () => {
               validate: {
                 alreadyExist: async (value) => {
                   const enteredEmail = { email: value };
-                  const response = await mutateAsyncForDuplicateEmail(
-                    enteredEmail
-                  );
-                  console.log(response);
-                  if (!response?.isUsableEmail) {
+                  try {
+                    const response = await mutateAsyncForDuplicateEmail(
+                      enteredEmail
+                    );
+                    return response?.isUsableEmail
+                      ? true
+                      : SIGN_ERROR_MESSAGE.takenEmail;
+                  } catch (error) {
                     return SIGN_ERROR_MESSAGE.takenEmail;
                   }
-                  return true;
                 },
               },
             }}

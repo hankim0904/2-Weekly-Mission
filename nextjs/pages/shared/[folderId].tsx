@@ -1,4 +1,4 @@
-import { axiosInstance } from '@/api/axiosInstanceWithToken';
+import { axiosInstance } from '@/api/axiosInstance';
 import { GetServerSidePropsContext } from 'next';
 
 import SharedHeader from '@/components/SharedHeader';
