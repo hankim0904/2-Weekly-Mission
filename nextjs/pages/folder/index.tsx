@@ -12,12 +12,11 @@ import {
   getFolderListQueryKey,
   getLinkListQueryKey,
   getUserQueryKey,
-  getWholeLinkListQueryKey,
 } from '@/api/queryKeys';
 import {
   getFolderListApi,
+  getLinkListApi,
   getSignedUserApi,
-  getWholeLinkListApi,
 } from '@/api/apiCollection';
 
 import FolderHeader from '@/components/FolderHeader';
@@ -28,6 +27,7 @@ import { getCookie } from '@/utils/manageTokenInfo';
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const queryClient = new QueryClient();
   const { accessToken } = context.req.cookies;
+  const folderId = '';
 
   await queryClient.prefetchQuery({
     queryKey: getUserQueryKey(),
@@ -40,8 +40,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   });
 
   await queryClient.prefetchQuery({
-    queryKey: getWholeLinkListQueryKey(),
-    queryFn: () => getWholeLinkListApi(accessToken),
+    queryKey: getLinkListQueryKey(folderId),
+    queryFn: () => getLinkListApi(folderId, accessToken),
   });
 
   return {

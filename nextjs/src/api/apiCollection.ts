@@ -38,30 +38,31 @@ export const getSignedUserApi = async (accessToken?: string | undefined) => {
   return response.data;
 };
 
-export const getLinkListApi = async (
-  folderId: string | string[] | undefined
-) => {
-  const response = await axiosInstance.get(`/folders/${folderId}/links`);
-
-  return response.data;
-};
-
-export const getWholeLinkListApi = async (accessToken?: string | undefined) => {
-  const response = accessToken
-    ? await axiosInstance.get('/links', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-    : await axiosInstanceWithToken.get('/links');
-
-  return response.data;
-};
-
 export const getFolderListApi = async (accessToken?: string | undefined) => {
   const response = accessToken
     ? await axiosInstance.get('/folders', {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
     : await axiosInstanceWithToken.get('/folders');
+
+  return response.data;
+};
+
+export const getLinkListApi = async (
+  folderId: string | string[] | undefined,
+  accessToken?: string | undefined
+) => {
+  let response;
+
+  if (folderId) {
+    response = await axiosInstance.get(`/folders/${folderId}/links`);
+  } else {
+    response = accessToken
+      ? await axiosInstance.get('/links', {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+      : await axiosInstanceWithToken.get('/links');
+  }
 
   return response.data;
 };

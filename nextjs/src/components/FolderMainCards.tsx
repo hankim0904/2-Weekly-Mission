@@ -1,11 +1,13 @@
+import { useRouter } from 'next/router';
+
 import { useQuery } from '@tanstack/react-query';
-import { getWholeLinkListQueryKey } from '@/api/queryKeys';
-import { getWholeLinkListApi } from '@/api/apiCollection';
+import { getLinkListQueryKey } from '@/api/queryKeys';
+import { getLinkListApi } from '@/api/apiCollection';
 
 import styled from 'styled-components';
 import FolderMainCard from '@/components/FolderMainCard';
 
-import { Folder, LinkListItem } from '@/types/FolderType';
+import { LinkListItem } from '@/types/FolderType';
 
 const StyledNolink = styled.div`
   width: 106rem;
@@ -33,13 +35,16 @@ const StyledNolink = styled.div`
 `;
 
 function FolderMainCards() {
+  const router = useRouter();
+  const folderId = router.query['folderId'];
+
   const {
     data: linkListData,
     isError: isLinkListError,
     isLoading: isLinkListLoading,
   } = useQuery({
-    queryKey: getWholeLinkListQueryKey(),
-    queryFn: () => getWholeLinkListApi(),
+    queryKey: getLinkListQueryKey(folderId),
+    queryFn: () => getLinkListApi(folderId),
     staleTime: 1000 * 60 * 5,
   });
 

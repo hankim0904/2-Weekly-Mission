@@ -168,7 +168,7 @@ function FolderMain({ currentFolder }: FolderMainProps) {
           </div>
         )}
       </S.Title>
-      <FolderMainCards folderList={folderListData} />
+      <FolderMainCards />
 
       {isAddModalOpen && (
         <Modal modalTitle="폴더 추가" onClose={handleCloseModal}>
