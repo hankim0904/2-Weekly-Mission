@@ -1,10 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import styled from 'styled-components';
-
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getFolderListQueryKey } from '@/api/queryKeys';
 import { getFolderListApi } from '@/api/apiCollection';
+
+import styled from 'styled-components';
 import { Folder } from '@/types/FolderType';
+import Image from 'next/image';
+
+interface ListItemProps {
+  selected: boolean;
+}
 
 const AddFolderList = styled.ul`
   display: flex;
@@ -14,13 +20,14 @@ const AddFolderList = styled.ul`
   margin-bottom: 2.4rem;
 `;
 
-const AddFolderListItem = styled.li`
+const AddFolderListItem = styled.li<ListItemProps>`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   padding: 8px;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: ${(props) => (props.selected ? '#f0f6ff' : '#fff')};
   cursor: pointer;
 
   &:hover {
@@ -30,6 +37,11 @@ const AddFolderListItem = styled.li`
   &:hover p {
     color: #6d6afe;
   }
+`;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const FolderName = styled.p`
@@ -44,7 +56,15 @@ const LinkCount = styled.span`
   margin-left: 8px;
 `;
 
-const FolderList = () => {
+interface FolderListProps {
+  selectedFolderId: number;
+  setSelectedFolderId: (id: number) => void;
+}
+
+const FolderList = ({
+  selectedFolderId,
+  setSelectedFolderId,
+}: FolderListProps) => {
   const {
     data: folderListData,
     isError: isFolderListError,
@@ -67,9 +87,23 @@ const FolderList = () => {
     <AddFolderList>
       {folderListData.map((folder: Folder) => {
         return (
-          <AddFolderListItem key={folder.id}>
-            <FolderName>{folder.name}</FolderName>
-            <LinkCount>{folder.link_count}개 링크</LinkCount>
+          <AddFolderListItem
+            key={folder.id}
+            onClick={() => setSelectedFolderId(folder.id)}
+            selected={folder.id === selectedFolderId}
+          >
+            <Container>
+              <FolderName>{folder.name}</FolderName>
+              <LinkCount>{folder.link_count}개 링크</LinkCount>
+            </Container>
+            {folder.id === selectedFolderId && (
+              <Image
+                src="/images/check.svg"
+                alt="체크 아이콘"
+                width={14}
+                height={14}
+              />
+            )}
           </AddFolderListItem>
         );
       })}

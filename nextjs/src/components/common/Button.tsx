@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const BaseButton = styled.button`
   display: flex;
@@ -25,9 +25,10 @@ const StyledRedButton = styled(BaseButton)`
 interface ButtonProps {
   children: React.ReactNode;
   colorVariant: 'default' | 'red';
+  type?: 'button' | 'submit' | 'reset';
 }
 
-function Button({ children, colorVariant }: ButtonProps) {
+function Button({ children, colorVariant, type }: ButtonProps) {
   let StyledComponent: any;
 
   switch (colorVariant) {
@@ -41,7 +42,7 @@ function Button({ children, colorVariant }: ButtonProps) {
       break;
   }
 
-  return <StyledComponent>{children}</StyledComponent>;
+  return <StyledComponent type={type}>{children}</StyledComponent>;
 }
 
 export default Button;

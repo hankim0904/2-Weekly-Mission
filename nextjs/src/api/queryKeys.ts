@@ -7,5 +7,6 @@ export const getFolderQueryKey = (folderId: string | string[] | undefined) => [
   folderId,
 ];
 
-export const getLinkListQueryKey = (folderId: string | string[] | undefined) =>
-  folderId ? ['linkList', folderId] : ['linkList'];
+export const getLinkListQueryKey = (
+  folderId: string | string[] | undefined | number
+) => (folderId ? ['linkList', folderId] : ['linkList']);

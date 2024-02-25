@@ -1,4 +1,9 @@
-import { EnteredEmail, EnteredSignInfo } from '../types/apiType';
+import {
+  EnteredEmail,
+  EnteredSignInfo,
+  NewFolder,
+  NewLink,
+} from '../types/apiType';
 import { axiosInstance } from './axiosInstance';
 import { axiosInstanceWithToken } from './axiosInstanceWithToken';
 
@@ -18,6 +23,18 @@ export const postCheckEmailDuplicateApi = async (
   enteredEmail: EnteredEmail
 ) => {
   const response = await axiosInstance.post('/users/check-email', enteredEmail);
+
+  return response.data;
+};
+
+export const postLinkToFolderApi = async (newLink: NewLink) => {
+  const response = await axiosInstanceWithToken.post('/links', newLink);
+
+  return response.data;
+};
+
+export const postAddFolderApi = async (newFolder: NewFolder) => {
+  const response = await axiosInstanceWithToken.post('/folders', newFolder);
 
   return response.data;
 };
@@ -63,6 +80,32 @@ export const getLinkListApi = async (
         })
       : await axiosInstanceWithToken.get('/links');
   }
+
+  return response.data;
+};
+
+export const putEditFolderApi = async (
+  editedFolder: NewFolder,
+  folderId: string
+) => {
+  const response = await axiosInstanceWithToken.put(
+    `/folders/${folderId}`,
+    editedFolder
+  );
+
+  return response.data;
+};
+
+export const deleteFolderApi = async (
+  folderId: string | number | undefined
+) => {
+  const response = await axiosInstanceWithToken.delete(`/folders/${folderId}`);
+
+  return response.data;
+};
+
+export const deleteLinkApi = async (linkId: string | number | undefined) => {
+  const response = await axiosInstanceWithToken.delete(`/links/${linkId}`);
 
   return response.data;
 };

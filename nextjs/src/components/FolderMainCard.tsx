@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { MouseEvent, useState } from 'react';
+
+import { useModal } from '@ebay/nice-modal-react';
+import AddLinkToFolderModal from './modal/AddLinkToFolder';
+import DeleteFolderOrLinkModal from './modal/DeleteFolderOrLink';
+
 import styled from 'styled-components';
 import classNames from 'classnames';
 
-import Modal from '@/components/common/Modal';
-import FolderList from '@/components/common/FolderList';
-import Button from '@/components/common/Button';
-
 import { LinkListItem } from '@/types/FolderType';
-
 import { formatDate, countAgo } from '@/utils/getDateInfo';
 import Image from 'next/image';
 
@@ -51,27 +51,14 @@ interface FolderMainCardProps {
 }
 
 function FolderMainCard({ linkData, target, rel }: FolderMainCardProps) {
-  const { created_at, url, title, description, image_source } = linkData;
-  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const addLinkToFolderModal = useModal(AddLinkToFolderModal);
+  const deleteLinkModal = useModal(DeleteFolderOrLinkModal);
+  const { id, created_at, url, title, description, image_source } = linkData;
   const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
 
   const handleToggleMenu = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setIsSelectMenuOpen((prev) => !prev);
-  };
-
-  const handleRemoveModal = () => {
-    setIsRemoveModalOpen(true);
-  };
-
-  const handleAddModal = () => {
-    setIsAddModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsAddModalOpen(false);
-    setIsRemoveModalOpen(false);
   };
 
   return (
@@ -125,10 +112,24 @@ function FolderMainCard({ linkData, target, rel }: FolderMainCardProps) {
                 })}
               >
                 <li>
-                  <button onClick={handleRemoveModal}>삭제하기</button>
+                  <button
+                    onClick={() =>
+                      deleteLinkModal.show({
+                        currentId: id,
+                        subTitle: url,
+                        isLink: true,
+                      })
+                    }
+                  >
+                    삭제하기
+                  </button>
                 </li>
                 <li>
-                  <button onClick={handleAddModal}>폴더에 추가</button>
+                  <button
+                    onClick={() => addLinkToFolderModal.show({ inputUrl: url })}
+                  >
+                    폴더에 추가
+                  </button>
                 </li>
               </ul>
             )}
@@ -137,27 +138,6 @@ function FolderMainCard({ linkData, target, rel }: FolderMainCardProps) {
         <p className="card-description">{description}</p>
         <span className="card-date">{formatDate(created_at)}</span>
       </div>
-
-      {isRemoveModalOpen && (
-        <Modal modalTitle="링크 삭제" subTitle={url} onClose={handleCloseModal}>
-          <div className="modal-content">
-            <Button colorVariant="red">삭제하기</Button>
-          </div>
-        </Modal>
-      )}
-
-      {isAddModalOpen && (
-        <Modal
-          modalTitle="폴더에 추가"
-          subTitle={url}
-          onClose={handleCloseModal}
-        >
-          <div className="modal-content">
-            <FolderList />
-            <Button colorVariant="default">추가하기</Button>
-          </div>
-        </Modal>
-      )}
     </StyledFolderMainCard>
   );
 }

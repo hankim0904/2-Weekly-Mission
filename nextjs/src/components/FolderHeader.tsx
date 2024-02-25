@@ -1,9 +1,9 @@
-import { ChangeEvent, MouseEvent, useState } from 'react';
-import styled from 'styled-components';
-import FolderList from '@/components/common/FolderList';
-import Button from '@/components/common/Button';
-import Modal from '@/components/common/Modal';
+import { ChangeEvent, useState } from 'react';
 
+import { useModal } from '@ebay/nice-modal-react';
+import AddLinkToFolderModal from './modal/AddLinkToFolder';
+
+import styled from 'styled-components';
 import Image from 'next/image';
 
 const flex = `
@@ -99,17 +99,8 @@ const StyledFolderHeader = styled.header`
 `;
 
 function FolderHeader() {
-  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const modal = useModal(AddLinkToFolderModal);
   const [inputUrl, setInputUrl] = useState<string>('');
-
-  const handleAddModal = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setIsAddModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsAddModalOpen(false);
-  };
 
   const handleInputUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputUrl(e.target.value);
@@ -127,23 +118,16 @@ function FolderHeader() {
           placeholder="링크를 추가해 보세요."
           onChange={handleInputUrlChange}
         />
-        <button className="link-cta" onClick={handleAddModal}>
+        <button
+          className="link-cta"
+          onClick={(e) => {
+            e.preventDefault();
+            modal.show({ inputUrl });
+          }}
+        >
           추가하기
         </button>
       </form>
-
-      {isAddModalOpen && (
-        <Modal
-          modalTitle="폴더에 추가"
-          subTitle={inputUrl}
-          onClose={handleCloseModal}
-        >
-          <div className="modal-content">
-            <FolderList />
-            <Button colorVariant="default">추가하기</Button>
-          </div>
-        </Modal>
-      )}
     </StyledFolderHeader>
   );
 }
