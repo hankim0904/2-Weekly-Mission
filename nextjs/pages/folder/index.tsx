@@ -35,10 +35,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     queryFn: () => getFolderListApi(accessToken),
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: getLinkListQueryKey(folderId),
-    queryFn: () => getLinkListApi(folderId, accessToken),
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: getLinkListQueryKey(folderId),
+  //   queryFn: () => getLinkListApi(folderId, accessToken),
+  // });
 
   return {
     props: {
