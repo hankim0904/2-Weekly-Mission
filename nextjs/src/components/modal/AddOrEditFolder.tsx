@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postAddFolderApi, putEditFolderApi } from '@/api/apiCollection';
+import { postAddFolderApi, putEditFolderApi } from '@/api/api';
 import { getFolderListQueryKey } from '@/api/queryKeys';
 
 import Modal from '@/components/common/Modal';

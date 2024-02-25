@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getFolderListQueryKey } from '@/api/queryKeys';
-import { getFolderListApi } from '@/api/apiCollection';
+import { getFolderListApi } from '@/api/api';
 
 import styled from 'styled-components';
 import { Folder } from '@/types/FolderType';

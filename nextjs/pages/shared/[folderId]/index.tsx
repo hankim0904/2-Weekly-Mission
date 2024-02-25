@@ -11,11 +11,7 @@ import {
   getLinkListQueryKey,
   getUserQueryKey,
 } from '@/api/queryKeys';
-import {
-  getFolderApi,
-  getLinkListApi,
-  getSignedUserApi,
-} from '@/api/apiCollection';
+import { getFolderApi, getLinkListApi, getSignedUserApi } from '@/api/api';
 
 import SharedHeader from '@/components/SharedHeader';
 import SharedMain from '@/components/SharedMain';

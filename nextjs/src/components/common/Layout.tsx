@@ -3,7 +3,7 @@ import Footer from '@/components/common/Footer';
 
 import { useQuery } from '@tanstack/react-query';
 import { getUserQueryKey } from '@/api/queryKeys';
-import { getSignedUserApi } from '@/api/apiCollection';
+import { getSignedUserApi } from '@/api/api';
 
 interface LayoutProps {
   children: React.ReactNode;

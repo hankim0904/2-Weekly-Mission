@@ -13,11 +13,7 @@ import {
   getLinkListQueryKey,
   getUserQueryKey,
 } from '@/api/queryKeys';
-import {
-  getFolderListApi,
-  getLinkListApi,
-  getSignedUserApi,
-} from '@/api/apiCollection';
+import { getFolderListApi, getLinkListApi, getSignedUserApi } from '@/api/api';
 
 import FolderHeader from '@/components/FolderHeader';
 import FolderMain from '@/components/FolderMain';

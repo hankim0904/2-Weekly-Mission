@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { getLinkListQueryKey } from '@/api/queryKeys';
-import { getLinkListApi } from '@/api/apiCollection';
+import { getLinkListApi } from '@/api/api';
 
 import SharedMainCard from '@/components/SharedMainCard';
 import * as S from '@/styles/Main';

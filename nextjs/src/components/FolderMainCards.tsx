@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';
 import { getLinkListQueryKey } from '@/api/queryKeys';
-import { getLinkListApi } from '@/api/apiCollection';
+import { getLinkListApi } from '@/api/api';
 
 import styled from 'styled-components';
 import FolderMainCard from '@/components/FolderMainCard';

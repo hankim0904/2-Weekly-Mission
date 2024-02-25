@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';
 import { getFolderListQueryKey } from '@/api/queryKeys';
-import { getFolderListApi } from '@/api/apiCollection';
+import { getFolderListApi } from '@/api/api';
 
 import { useModal } from '@ebay/nice-modal-react';
 import AddOrEditFolderModal from './modal/AddOrEditFolder';

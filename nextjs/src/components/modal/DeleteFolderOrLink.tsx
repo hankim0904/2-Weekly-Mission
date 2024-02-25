@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteFolderApi, deleteLinkApi } from '@/api/apiCollection';
+import { deleteFolderApi, deleteLinkApi } from '@/api/api';
 import { getFolderListQueryKey, getLinkListQueryKey } from '@/api/queryKeys';
 
 import Modal from '../common/Modal';
